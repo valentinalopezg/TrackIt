@@ -541,8 +541,8 @@
                 </div>
             </div>
         </main>
-        
-        
+
+
 
         <!-- Alert Container -->
         <div class="alert-container" id="alertContainer"></div>
@@ -551,292 +551,279 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
         <script>
-            // [Mantener el JavaScript existente pero agregar nuevas funciones para los componentes mejorados]
-            
-            // Variables globales mejoradas
-            let sidebarActive = false;
-            let alertTimeout;
-            
-            // Datos simulados expandidos
-            const dashboardData = {
-                inventoryValue: 87420,
-                totalProducts: 847,
-                todaySales: 2456,
-                activeProducts: 734,
-                lowStock: 108,
-                outOfStock: 5,
-                criticalAlerts: 5,
-                salesData: [1200, 1900, 3000, 5000, 2000, 3000, 2500],
-                inventoryMovement: {
-                    entries: [45, 67, 32, 89, 52],
-                    exits: [38, 54, 41, 67, 43]
-                }
-            };
+                        // [Mantener el JavaScript existente pero agregar nuevas funciones para los componentes mejorados]
 
-            // Inicialización mejorada
-            document.addEventListener('DOMContentLoaded', function() {
-                initializeDashboard();
-                setupEventListeners();
-                setupEnhancedFeatures();
-                showWelcomeAlert();
-                simulateRealTimeUpdates();
-            });
-
-            // Nuevas funciones para características mejoradas
-            function setupEnhancedFeatures() {
-                // Configurar filtros de gráfico
-                const filterButtons = document.querySelectorAll('.filter-btn');
-                filterButtons.forEach(btn => {
-                    btn.addEventListener('click', function() {
+                        // Variables globales mejoradas
+                        let sidebarActive = false;
+                        let alertTimeout;
+                        // Datos simulados expandidos
+                        const dashboardData = {
+                        inventoryValue: 87420,
+                                totalProducts: 847,
+                                todaySales: 2456,
+                                activeProducts: 734,
+                                lowStock: 108,
+                                outOfStock: 5,
+                                criticalAlerts: 5,
+                                salesData: [1200, 1900, 3000, 5000, 2000, 3000, 2500],
+                                inventoryMovement: {
+                                entries: [45, 67, 32, 89, 52],
+                                        exits: [38, 54, 41, 67, 43]
+                                }
+                        };
+                        // Inicialización mejorada
+                        document.addEventListener('DOMContentLoaded', function() {
+                        initializeDashboard();
+                        setupEventListeners();
+                        setupEnhancedFeatures();
+                        showWelcomeAlert();
+                        simulateRealTimeUpdates();
+                        });
+                        // Nuevas funciones para características mejoradas
+                        function setupEnhancedFeatures() {
+                        // Configurar filtros de gráfico
+                        const filterButtons = document.querySelectorAll('.filter-btn');
+                        filterButtons.forEach(btn => {
+                        btn.addEventListener('click', function() {
                         filterButtons.forEach(b => b.classList.remove('active'));
                         this.classList.add('active');
                         updateChartData(this.textContent.toLowerCase());
-                    });
-                });
-
-                // Configurar selección múltiple en tabla
-                const selectAll = document.querySelector('.select-all');
-                if (selectAll) {
-                    selectAll.addEventListener('change', function() {
+                        });
+                        });
+                        // Configurar selección múltiple en tabla
+                        const selectAll = document.querySelector('.select-all');
+                        if (selectAll) {
+                        selectAll.addEventListener('change', function() {
                         const rowSelects = document.querySelectorAll('.row-select');
                         rowSelects.forEach(checkbox => {
-                            checkbox.checked = this.checked;
+                        checkbox.checked = this.checked;
                         });
-                    });
-                }
+                        });
+                        }
 
-                // Configurar búsqueda
-                const searchInput = document.querySelector('.search-box input');
-                if (searchInput) {
-                    searchInput.addEventListener('input', debounce(function() {
+                        // Configurar búsqueda
+                        const searchInput = document.querySelector('.search-box input');
+                        if (searchInput) {
+                        searchInput.addEventListener('input', debounce(function() {
                         performSearch(this.value);
-                    }, 300));
-                }
-            }
+                        }, 300));
+                        }
+                        }
 
-            function updateChartData(filter) {
-                // Simular actualización de gráfico
-                showAlert(`Actualizando vista: ${filter}`, 'info', 2000);
-            }
+                        function updateChartData(filter) {
+                        // Simular actualización de gráfico
+                        showAlert(`Actualizando vista: ${filter}`, 'info', 2000);
+                        }
 
-            function performSearch(query) {
-                if (query.length > 2) {
-                    showAlert(`Buscando: "${query}"...`, 'info', 2000);
-                }
-            }
+                        function performSearch(query) {
+                        if (query.length > 2) {
+                        showAlert(`Buscando: "${query}"...`, 'info', 2000);
+                        }
+                        }
 
-            function debounce(func, wait) {
-                let timeout;
-                return function executedFunction(...args) {
-                    const later = () => {
+                        function debounce(func, wait) {
+                        let timeout;
+                        return function executedFunction(...args) {
+                        const later = () => {
                         clearTimeout(timeout);
                         func(...args);
-                    };
-                    clearTimeout(timeout);
-                    timeout = setTimeout(later, wait);
-                };
-            }
+                        };
+                        clearTimeout(timeout);
+                        timeout = setTimeout(later, wait);
+                        };
+                        }
 
-            // Mantener funciones existentes y agregar las mejoras
-            // [Resto del JavaScript existente...]
-            
-            // Funciones existentes
-            function setupEventListeners() {
-                const sidebarToggle = document.getElementById('sidebarToggle');
-                if (sidebarToggle) {
-                    sidebarToggle.addEventListener('click', toggleSidebar);
-                }
+                        // Mantener funciones existentes y agregar las mejoras
+                        // [Resto del JavaScript existente...]
 
-                const navLinks = document.querySelectorAll('.nav-link[data-section]');
-                navLinks.forEach(link => {
-                    link.addEventListener('click', function(e) {
+                        // Funciones existentes
+                        function setupEventListeners() {
+                        const sidebarToggle = document.getElementById('sidebarToggle');
+                        if (sidebarToggle) {
+                        sidebarToggle.addEventListener('click', toggleSidebar);
+                        }
+
+                        const navLinks = document.querySelectorAll('.nav-link[data-section]');
+                        navLinks.forEach(link => {
+                        link.addEventListener('click', function(e) {
                         e.preventDefault();
                         handleNavigation(this);
-                    });
-                });
+                        });
+                        });
+                        const notificationBtn = document.getElementById('notificationBtn');
+                        if (notificationBtn) {
+                        notificationBtn.addEventListener('click', showNotifications);
+                        }
 
-                const notificationBtn = document.getElementById('notificationBtn');
-                if (notificationBtn) {
-                    notificationBtn.addEventListener('click', showNotifications);
-                }
-
-                document.addEventListener('click', function(e) {
-                    if (window.innerWidth <= 768 && sidebarActive) {
+                        document.addEventListener('click', function(e) {
+                        if (window.innerWidth <= 768 && sidebarActive) {
                         const sidebar = document.getElementById('sidebar');
                         if (!sidebar.contains(e.target) && !e.target.closest('#sidebarToggle')) {
-                            closeSidebar();
+                        closeSidebar();
                         }
-                    }
-                });
+                        }
+                        });
+                        window.addEventListener('resize', handleResize);
+                        }
 
-                window.addEventListener('resize', handleResize);
-            }
+                        function toggleSidebar() {
+                        const sidebar = document.getElementById('sidebar');
+                        sidebarActive = !sidebarActive;
+                        if (sidebarActive) {
+                        sidebar.classList.add('active');
+                        } else {
+                        sidebar.classList.remove('active');
+                        }
+                        }
 
-            function toggleSidebar() {
-                const sidebar = document.getElementById('sidebar');
-                sidebarActive = !sidebarActive;
-                if (sidebarActive) {
-                    sidebar.classList.add('active');
-                } else {
-                    sidebar.classList.remove('active');
-                }
-            }
+                        function closeSidebar() {
+                        const sidebar = document.getElementById('sidebar');
+                        sidebar.classList.remove('active');
+                        sidebarActive = false;
+                        }
 
-            function closeSidebar() {
-                const sidebar = document.getElementById('sidebar');
-                sidebar.classList.remove('active');
-                sidebarActive = false;
-            }
+                        function handleNavigation(clickedLink) {
+                        document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        });
+                        clickedLink.classList.add('active');
+                        const section = clickedLink.dataset.section;
+                        const sectionTitles = {
+                        'dashboard': 'Dashboard - Centro de Control',
+                                'products': 'Gestión de Productos',
+                                'categories': 'Categorías',
+                                'stock': 'Control de Stock',
+                                'suppliers': 'Gestión de Proveedores',
+                                'sales': 'Nueva Venta',
+                                'sales-history': 'Historial de Ventas',
+                                'reports': 'Reportes',
+                                'analytics': 'Análisis y Estadísticas',
+                                'settings': 'Configuración'
+                        };
+                        document.getElementById('pageTitle').textContent = sectionTitles[section] || 'Dashboard';
+                        if (window.innerWidth <= 768) {
+                        closeSidebar();
+                        }
 
-            function handleNavigation(clickedLink) {
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.classList.remove('active');
-                });
-                clickedLink.classList.add('active');
-                
-                const section = clickedLink.dataset.section;
-                const sectionTitles = {
-                    'dashboard': 'Dashboard - Centro de Control',
-                    'products': 'Gestión de Productos',
-                    'categories': 'Categorías',
-                    'stock': 'Control de Stock',
-                    'suppliers': 'Gestión de Proveedores',
-                    'sales': 'Nueva Venta',
-                    'sales-history': 'Historial de Ventas',
-                    'reports': 'Reportes',
-                    'analytics': 'Análisis y Estadísticas',
-                    'settings': 'Configuración'
-                };
-                
-                document.getElementById('pageTitle').textContent = sectionTitles[section] || 'Dashboard';
-                
-                if (window.innerWidth <= 768) {
-                    closeSidebar();
-                }
+                        if (section !== 'dashboard') {
+                        showAlert(`Navegando a: ${sectionTitles[section]}`, 'info');
+                        }
+                        }
 
-                if (section !== 'dashboard') {
-                    showAlert(`Navegando a: ${sectionTitles[section]}`, 'info');
-                }
-            }
+                        function showNotifications() {
+                        showAlert('5 notificaciones: 5 productos agotados, 23 con stock bajo, 3 pedidos pendientes', 'info');
+                        }
 
-            function showNotifications() {
-                showAlert('5 notificaciones: 5 productos agotados, 23 con stock bajo, 3 pedidos pendientes', 'info');
-            }
+                        function showAlert(message, type = 'info', duration = 4000) {
+                        const alertContainer = document.getElementById('alertContainer');
+                        const alertDiv = document.createElement('div');
+                        alertDiv.className = `alert-custom alert-${type}`;
+                        let icon = '';
+                        switch (type) {
+                        case 'success': icon = 'fas fa-check-circle'; break;
+                        case 'warning': icon = 'fas fa-exclamation-triangle'; break;
+                        case 'danger': icon = 'fas fa-times-circle'; break;
+                        default: icon = 'fas fa-info-circle';
+                        }
 
-            function showAlert(message, type = 'info', duration = 4000) {
-                const alertContainer = document.getElementById('alertContainer');
-                const alertDiv = document.createElement('div');
-                alertDiv.className = `alert-custom alert-${type}`;
-                
-                let icon = '';
-                switch (type) {
-                    case 'success': icon = 'fas fa-check-circle'; break;
-                    case 'warning': icon = 'fas fa-exclamation-triangle'; break;
-                    case 'danger': icon = 'fas fa-times-circle'; break;
-                    default: icon = 'fas fa-info-circle';
-                }
-
-                alertDiv.innerHTML = `
+                        alertDiv.innerHTML = `
                     <div style="display: flex; align-items: center; gap: 0.75rem;">
                         <i class="${icon}"></i>
                         <span>${message}</span>
                     </div>
                     <button type="button" class="btn-close" onclick="closeAlert(this)"></button>
                 `;
-                
-                alertContainer.appendChild(alertDiv);
-                
-                setTimeout(() => {
-                    if (alertDiv && alertDiv.parentElement) {
+                        alertContainer.appendChild(alertDiv);
+                        setTimeout(() => {
+                        if (alertDiv && alertDiv.parentElement) {
                         closeAlert(alertDiv.querySelector('.btn-close'));
-                    }
-                }, duration);
-            }
+                        }
+                        }, duration);
+                        }
 
-            function closeAlert(button) {
-                const alert = button.closest('.alert-custom');
-                alert.classList.add('alert-fade-out');
-                setTimeout(() => {
-                    if (alert.parentElement) {
+                        function closeAlert(button) {
+                        const alert = button.closest('.alert-custom');
+                        alert.classList.add('alert-fade-out');
+                        setTimeout(() => {
+                        if (alert.parentElement) {
                         alert.remove();
-                    }
-                }, 300);
-            }
+                        }
+                        }, 300);
+                        }
 
-            function initializeDashboard() {
-                updateStats();
-                simulateDataLoading();
-            }
+                        function initializeDashboard() {
+                        updateStats();
+                        simulateDataLoading();
+                        }
 
-            function updateStats() {
-                document.getElementById('inventoryValue').textContent = ' + dashboardData.inventoryValue.toLocaleString();
-                document.getElementById('todaySales').textContent = ' + dashboardData.todaySales.toLocaleString();
-                document.getElementById('activeProducts').textContent = dashboardData.totalProducts;
-                document.getElementById('criticalAlerts').textContent = dashboardData.criticalAlerts;
-            }
+                        function updateStats() {
+                        document.getElementById('inventoryValue').textContent = ' + dashboardData.inventoryValue.toLocaleString();
+                                document.getElementById('todaySales').textContent = ' + dashboardData.todaySales.toLocaleString();
+                                document.getElementById('activeProducts').textContent = dashboardData.totalProducts;
+                        document.getElementById('criticalAlerts').textContent = dashboardData.criticalAlerts;
+                        }
 
-            function simulateDataLoading() {
-                const cards = document.querySelectorAll('.stat-card, .card');
-                cards.forEach((card, index) => {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(20px)';
-                    setTimeout(() => {
+                        function simulateDataLoading() {
+                        const cards = document.querySelectorAll('.stat-card, .card');
+                        cards.forEach((card, index) => {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
                         card.style.transition = 'all 0.5s ease';
                         card.style.opacity = '1';
                         card.style.transform = 'translateY(0)';
-                    }, index * 100);
-                });
-            }
+                        }, index * 100);
+                        });
+                        }
 
-            function simulateRealTimeUpdates() {
-                setInterval(() => {
-                    const increment = Math.floor(Math.random() * 200) + 50;
-                    dashboardData.todaySales += increment;
-                    document.getElementById('todaySales').textContent = ' + dashboardData.todaySales.toLocaleString();
+                        function simulateRealTimeUpdates() {
+                        setInterval(() => {
+                        const increment = Math.floor(Math.random() * 200) + 50;
+                        dashboardData.todaySales += increment;
+                        document.getElementById('todaySales').textContent = ' + dashboardData.todaySales.toLocaleString();
 
-                    if (Math.random() < 0.3) {
+                                if (Math.random() < 0.3) {
                         const products = ['Laptop Dell', 'Mouse Logitech', 'Teclado Mecánico', 'Monitor Samsung', 'Impresora HP'];
                         const randomProduct = products[Math.floor(Math.random() * products.length)];
                         const randomPrice = (Math.random() * 500 + 50).toFixed(0);
                         showAlert(`Nueva venta: ${randomProduct} - ${randomPrice}`, 'success', 3000);
-                    }
-                }, 15000);
-
-                setInterval(() => {
-                    if (Math.random() < 0.2) {
+                        }
+                        }, 15000);
+                        setInterval(() => {
+                        if (Math.random() < 0.2) {
                         const products = ['Tinta Color', 'Cables USB', 'Memoria RAM', 'Disco Duro'];
                         const randomProduct = products[Math.floor(Math.random() * products.length)];
                         showAlert(`⚠️ Stock crítico: ${randomProduct} - Requiere reabastecimiento`, 'warning', 5000);
-                    }
-                }, 25000);
-            }
+                        }
+                        }, 25000);
+                        }
 
-            function showWelcomeAlert() {
-                setTimeout(() => {
-                    showAlert('¡Sistema Track!t iniciado correctamente! Monitoreo en tiempo real activo.', 'success', 5000);
-                }, 1000);
-            }
+                        function showWelcomeAlert() {
+                        setTimeout(() => {
+                        showAlert('¡Sistema Track!t iniciado correctamente! Monitoreo en tiempo real activo.', 'success', 5000);
+                        }, 1000);
+                        }
 
-            function handleResize() {
-                if (window.innerWidth > 768) {
-                    const sidebar = document.getElementById('sidebar');
-                    sidebar.classList.remove('active');
-                    sidebarActive = false;
-                }
-            }
+                        function handleResize() {
+                        if (window.innerWidth > 768) {
+                        const sidebar = document.getElementById('sidebar');
+                        sidebar.classList.remove('active');
+                        sidebarActive = false;
+                        }
+                        }
 
-            function logout() {
-                if (confirm('¿Está seguro que desea cerrar sesión?')) {
-                    showAlert('Cerrando sesión...', 'info', 2000);
-                    setTimeout(() => {
+                        function logout() {
+                        if (confirm('¿Está seguro que desea cerrar sesión?')) {
+                        showAlert('Cerrando sesión...', 'info', 2000);
+                        setTimeout(() => {
                         window.location.href = 'index.jsp';
-                    }, 2000);
-                }
-            }
+                        }, 2000);
+                        }
+                        }
 
-            // Exponer funciones globalmente
-            window.logout = logout;
-            window.closeAlert = closeAlert;
+                        // Exponer funciones globalmente
+                        window.logout = logout;
+                        window.closeAlert = closeAlert;
         </script>
     </body>
 </html>

@@ -1,15 +1,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="modelo.Producto"%>
 <%@page import="java.util.List"%>
-<%@page import="java.text.NumberFormat"%>
-<%@page import="java.util.Locale"%>
+<%@page import="java.math.BigDecimal"%>
 <%
     // Obtener la lista de productos
-    List<?> listaProductos = (List<?>) request.getAttribute("listaProductos");
+    List<Producto> listaProductos = (List<Producto>) request.getAttribute("listaProductos");
     String mensaje = (String) request.getAttribute("mensaje");
     String error = (String) request.getAttribute("error");
-    
-    // Formateador de precios
-    NumberFormat formatoPrecio = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
 %>
 <!DOCTYPE html>
 <html lang="es">
@@ -147,7 +144,6 @@
                     
                     if (listaProductos != null) {
                         totalProductos = listaProductos.size();
-                        // Calcular estadísticas (se actualiza en el loop)
                     }
                 %>
 
@@ -247,52 +243,48 @@
                             </thead>
                             <tbody>
                                 <%
-                                    for (Object obj : listaProductos) {
-                                        // Usar reflection para obtener datos del producto
-                                        // IMPORTANTE: Ajusta estos métodos según tu clase Producto
-                                        try {
-                                            java.lang.reflect.Method getId = obj.getClass().getMethod("getId");
-                                            java.lang.reflect.Method getNombre = obj.getClass().getMethod("getNombre");
-                                            java.lang.reflect.Method getCategoria = obj.getClass().getMethod("getCategoria");
-                                            java.lang.reflect.Method getStock = obj.getClass().getMethod("getStock");
-                                            java.lang.reflect.Method getPrecioVenta = obj.getClass().getMethod("getPrecioVenta");
-                                            
-                                            Object id = getId.invoke(obj);
-                                            String nombre = (String) getNombre.invoke(obj);
-                                            String categoria = (String) getCategoria.invoke(obj);
-                                            int stock = (Integer) getStock.invoke(obj);
-                                            java.math.BigDecimal precio = (java.math.BigDecimal) getPrecioVenta.invoke(obj);
-                                            
-                                            // Calcular estadísticas
-                                            if (stock == 0) {
-                                                agotados++;
-                                            } else if (stock <= 10) {
-                                                stockBajo++;
-                                            } else {
-                                                productosActivos++;
-                                            }
-                                            
-                                            String stockClass = stock == 0 ? "critical" : (stock <= 10 ? "low" : "normal");
-                                            String badgeClass = stock > 20 ? "stock-high" : (stock > 10 ? "stock-medium" : (stock > 0 ? "stock-low" : "out"));
-                                            String estadoTexto = stock > 20 ? "Disponible" : (stock > 10 ? "Stock Normal" : (stock > 0 ? "Stock Bajo" : "Agotado"));
-                                            String estadoIcono = stock > 20 ? "check-circle" : (stock > 10 ? "info-circle" : (stock > 0 ? "exclamation-triangle" : "times-circle"));
+                                    for (Producto producto : listaProductos) {
+                                        int id = producto.getIdProducto();
+                                        String nombre = producto.getNombre();
+                                        String categoria = producto.getNombreCategoria();
+                                        int stock = producto.getStockActual();
+                                        BigDecimal precio = producto.getPrecioVenta();
+                                        
+                                        // Calcular estadísticas
+                                        if (stock == 0) {
+                                            agotados++;
+                                        } else if (stock <= producto.getStockMinimo()) {
+                                            stockBajo++;
+                                        } else {
+                                            productosActivos++;
+                                        }
+                                        
+                                        String stockClass = stock == 0 ? "critical" : (stock <= producto.getStockMinimo() ? "low" : "normal");
+                                        String badgeClass = stock > 20 ? "stock-high" : (stock > 10 ? "stock-medium" : (stock > 0 ? "stock-low" : "out"));
+                                        String estadoTexto = stock > 20 ? "Disponible" : (stock > 10 ? "Stock Normal" : (stock > 0 ? "Stock Bajo" : "Agotado"));
+                                        String estadoIcono = stock > 20 ? "check-circle" : (stock > 10 ? "info-circle" : (stock > 0 ? "exclamation-triangle" : "times-circle"));
                                 %>
                                 <tr>
                                     <td><strong>#<%= id %></strong></td>
                                     <td>
                                         <div class="product-info">
                                             <div class="product-name"><%= nombre %></div>
+                                            <% if (producto.getDescripcion() != null && !producto.getDescripcion().isEmpty()) { %>
+                                                <div class="product-sku" style="font-size: 0.85rem; color: var(--text-muted);">
+                                                    <%= producto.getDescripcion().length() > 50 ? producto.getDescripcion().substring(0, 50) + "..." : producto.getDescripcion() %>
+                                                </div>
+                                            <% } %>
                                         </div>
                                     </td>
                                     <td>
-                                        <span class="category-badge"><%= categoria %></span>
+                                        <span class="category-badge"><%= categoria != null ? categoria : "Sin categoría" %></span>
                                     </td>
                                     <td>
                                         <span class="stock-level <%= stockClass %>"><%= stock %></span>
                                     </td>
                                     <td>
                                         <strong style="color: var(--success-color);">
-                                            $<%= String.format("%,.2f", precio) %>
+                                            $<%= String.format("%,.0f", precio) %>
                                         </strong>
                                     </td>
                                     <td>
@@ -323,12 +315,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <%
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                %>
+                                <% } %>
                             </tbody>
                         </table>
 
@@ -339,7 +326,7 @@
                             document.getElementById('agotados').textContent = <%= agotados %>;
                         </script>
 
-                        <!-- Mensaje cuando no hay resultados -->
+                        <!-- Mensaje cuando no hay resultados de búsqueda -->
                         <div id="noResults" style="display: none; text-align: center; padding: 2rem;">
                             <i class="fas fa-search" style="font-size: 3rem; color: var(--border-color); margin-bottom: 1rem;"></i>
                             <h4 style="color: var(--text-muted);">No se encontraron productos</h4>
@@ -357,7 +344,7 @@
             </div>
         </main>
 
-        <!-- Modal de confirmación -->
+        <!-- Modal de confirmación de eliminación -->
         <div class="modal fade" id="modalEliminar" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -446,7 +433,7 @@
                 }
             }
 
-            // Confirmar eliminación
+            // Función para confirmar eliminación
             function confirmarEliminar(id, nombre) {
                 document.getElementById('nombreProductoEliminar').textContent = nombre;
                 document.getElementById('btnConfirmarEliminar').href = 
@@ -456,7 +443,7 @@
                 modal.show();
             }
 
-            // Auto-cerrar alertas
+            // Auto-cerrar alertas después de 5 segundos
             document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(function() {
                     const alerts = document.querySelectorAll('.alert');

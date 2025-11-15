@@ -1,0 +1,250 @@
+/* ================================
+   PRODUCTOS - CRUD
+   ================================ */
+
+/* Contenedor principal */
+.productos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem;
+}
+
+/* Encabezado */
+.productos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.productos-header h2 {
+    color: var(--primary-text);
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* Botón de agregar producto */
+.btn-agregar {
+    background: var(--inventory-primary);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s ease;
+}
+.btn-agregar:hover {
+    background: var(--inventory-secondary);
+}
+
+/* Tabla de productos */
+.table-container {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    border: 1px solid var(--medium-gray);
+}
+
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.product-table thead {
+    background: linear-gradient(90deg, var(--inventory-primary), var(--inventory-secondary));
+    color: white;
+}
+
+.product-table th, .product-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.product-table tbody tr:hover {
+    background-color: var(--light-gray);
+    transition: background-color 0.2s ease;
+}
+
+/* Estados del stock */
+.stock-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: white;
+}
+.stock-high { background: var(--stock-high); }
+.stock-medium { background: var(--stock-medium); }
+.stock-low { background: var(--stock-low); }
+.stock-out { background: var(--stock-out); }
+
+/* Botones pequeños (editar / eliminar) */
+.btn-sm {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #fff;
+    margin-right: 0.4rem;
+    display: inline-block;
+    transition: opacity 0.3s;
+}
+.btn-sm:hover { opacity: 0.8; }
+
+.btn-warning { background-color: #f59e0b; }
+.btn-urgent { background-color: #dc2626; }
+
+/* Barra de búsqueda */
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: var(--white);
+    border: 1px solid var(--medium-gray);
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: var(--shadow-sm);
+}
+
+.search-box i {
+    color: var(--medium-gray);
+    margin-right: 0.5rem;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 0.9rem;
+    background: transparent;
+    color: var(--primary-text);
+}
+
+/* Formularios de agregar / editar producto */
+.form-producto {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    padding: 2rem;
+    max-width: 600px;
+    margin: auto;
+}
+
+.form-producto h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--inventory-primary);
+}
+
+.form-producto label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+    color: var(--primary-text);
+}
+
+.form-producto input,
+.form-producto select {
+    width: 100%;
+    padding: 0.7rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--medium-gray);
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.9rem;
+}
+
+.form-producto input:focus,
+.form-producto select:focus {
+    border-color: var(--inventory-primary);
+    box-shadow: 0 0 5px rgba(37, 99, 235, 0.3);
+}
+
+.form-producto .acciones {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.btn-guardar {
+    background: var(--inventory-primary);
+    color: #fff;
+    padding: 0.7rem 1.2rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s ease;
+}
+.btn-guardar:hover {
+    background: var(--inventory-secondary);
+}
+
+.btn-cancelar {
+    background: var(--urgent);
+    color: #fff;
+    padding: 0.7rem 1.2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.3s ease;
+}
+.btn-cancelar:hover { opacity: 0.8; }
+
+/* ===== Estilos específicos para la vista de productos ===== */
+
+.table-container {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    border: 1px solid var(--medium-gray);
+    margin-top: 1.5rem;
+}
+
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.product-table thead {
+    background: linear-gradient(90deg, var(--inventory-primary), var(--inventory-secondary));
+    color: white;
+}
+
+.product-table th, .product-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.product-table tbody tr:hover {
+    background-color: var(--light-gray);
+    transition: background-color 0.2s ease;
+}
+
+.stock-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: white;
+}
+
+.stock-badge.stock-high { background: var(--stock-high); }
+.stock-badge.stock-medium { background: var(--stock-medium); }
+.stock-badge.stock-low { background: var(--stock-low); }
+.stock-badge.stock-out { background: var(--stock-out); }
+
+.btn-sm {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+}

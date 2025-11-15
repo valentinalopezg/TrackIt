@@ -1,5 +1,11 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    HttpSession sesion = request.getSession();
+    if (sesion.getAttribute("usuario") == null) {
+        sesion.setAttribute("usuario", "admin"); // usuario predeterminado temporal
+    }
+%>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -37,7 +43,7 @@
 
                 <div class="nav-section-title">Inventario</div>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" data-section="products">
+                    <a href="producto?accion=listar" class="nav-link" data-section="products">
                         <i class="fas fa-cube"></i>
                         Productos
                     </a>

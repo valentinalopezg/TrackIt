@@ -80,6 +80,7 @@ public class ProductoServlet extends HttpServlet {
             System.err.println("Error en ProductoServlet (GET): " + e.getMessage());
             e.printStackTrace();
             request.setAttribute("error", "Error al procesar la solicitud: " + e.getMessage());
+<<<<<<< Updated upstream
             request.setAttribute("exception", e);
             try {
                 request.getRequestDispatcher("/vistas/error.jsp").forward(request, response);
@@ -87,6 +88,9 @@ public class ProductoServlet extends HttpServlet {
                 // Si error.jsp no existe, redirigir al dashboard
                 response.sendRedirect(request.getContextPath() + "/dashboard.jsp");
             }
+=======
+            request.getRequestDispatcher("/vistas/error.jsp").forward(request, response);
+>>>>>>> Stashed changes
         }
     }
 
@@ -138,7 +142,11 @@ public class ProductoServlet extends HttpServlet {
         System.out.println("Productos recuperados: " + listaProductos.size());
 
         request.setAttribute("listaProductos", listaProductos);
+<<<<<<< Updated upstream
         request.getRequestDispatcher("/productos/listarProducto.jsp").forward(request, response);
+=======
+        request.getRequestDispatcher("/vistas/listarProducto.jsp").forward(request, response);
+>>>>>>> Stashed changes
     }
 
     /**
@@ -148,7 +156,11 @@ public class ProductoServlet extends HttpServlet {
             throws ServletException, IOException {
 
         System.out.println("Mostrando formulario de nuevo producto");
+<<<<<<< Updated upstream
         request.getRequestDispatcher("/productos/agregarProducto.jsp").forward(request, response);
+=======
+        request.getRequestDispatcher("/vistas/crearProducto.jsp").forward(request, response);
+>>>>>>> Stashed changes
     }
 
     /**
@@ -165,7 +177,11 @@ public class ProductoServlet extends HttpServlet {
 
             if (producto != null) {
                 request.setAttribute("producto", producto);
+<<<<<<< Updated upstream
                 request.getRequestDispatcher("/productos/editarProducto.jsp").forward(request, response);
+=======
+                request.getRequestDispatcher("/vistas/editarProducto.jsp").forward(request, response);
+>>>>>>> Stashed changes
             } else {
                 request.setAttribute("error", "Producto no encontrado");
                 listarProductos(request, response);
@@ -191,7 +207,11 @@ public class ProductoServlet extends HttpServlet {
 
             if (producto != null) {
                 request.setAttribute("producto", producto);
+<<<<<<< Updated upstream
                 request.getRequestDispatcher("/productos/verProducto.jsp").forward(request, response);
+=======
+                request.getRequestDispatcher("/vistas/verProducto.jsp").forward(request, response);
+>>>>>>> Stashed changes
             } else {
                 request.setAttribute("error", "Producto no encontrado");
                 listarProductos(request, response);

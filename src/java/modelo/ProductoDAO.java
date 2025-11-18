@@ -8,19 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DAO para gestionar operaciones de Producto en la base de datos
- * Track!t - Sistema de Gestión de Inventarios
+ * DAO para gestionar operaciones de Producto en la base de datos Track!t -
+ * Sistema de Gestión de Inventarios
  */
 public class ProductoDAO {
-    
+
     private Conexion conexion;
-    
+
     public ProductoDAO() {
         this.conexion = new Conexion();
     }
-    
+
     /**
      * Agrega un nuevo producto
+     *
      * @param p Producto a agregar
      * @return int número de filas afectadas
      */
@@ -28,12 +29,12 @@ public class ProductoDAO {
         Connection con = null;
         PreparedStatement ps = null;
         int resultado = 0;
-        
+
         try {
             con = conexion.crearConexion();
             String query = "INSERT INTO productos (codigo, nombre, descripcion, id_categoria, "
-                         + "precio_compra, precio_venta, stock_actual, stock_minimo, stock_maximo, estado) "
-                         + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    + "precio_compra, precio_venta, stock_actual, stock_minimo, stock_maximo, estado) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             ps = con.prepareStatement(query);
             ps.setString(1, p.getCodigo());
             ps.setString(2, p.getNombre());
@@ -45,25 +46,26 @@ public class ProductoDAO {
             ps.setInt(8, p.getStockMinimo());
             ps.setInt(9, p.getStockMaximo());
             ps.setString(10, p.getEstado());
-            
+
             resultado = ps.executeUpdate();
-            
+
             if (resultado > 0) {
                 System.out.println("Producto agregado: " + p.getNombre());
             }
-            
+
         } catch (SQLException e) {
             System.err.println("ERROR al agregar producto: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, null);
         }
-        
+
         return resultado;
     }
-    
+
     /**
      * Actualiza un producto
+     *
      * @param p Producto con datos actualizados
      * @return int número de filas afectadas
      */
@@ -71,12 +73,12 @@ public class ProductoDAO {
         Connection con = null;
         PreparedStatement ps = null;
         int resultado = 0;
-        
+
         try {
             con = conexion.crearConexion();
             String query = "UPDATE productos SET codigo=?, nombre=?, descripcion=?, id_categoria=?, "
-                         + "precio_compra=?, precio_venta=?, stock_actual=?, stock_minimo=?, "
-                         + "stock_maximo=?, estado=? WHERE id_producto=?";
+                    + "precio_compra=?, precio_venta=?, stock_actual=?, stock_minimo=?, "
+                    + "stock_maximo=?, estado=? WHERE id_producto=?";
             ps = con.prepareStatement(query);
             ps.setString(1, p.getCodigo());
             ps.setString(2, p.getNombre());
@@ -89,25 +91,26 @@ public class ProductoDAO {
             ps.setInt(9, p.getStockMaximo());
             ps.setString(10, p.getEstado());
             ps.setInt(11, p.getIdProducto());
-            
+
             resultado = ps.executeUpdate();
-            
+
             if (resultado > 0) {
                 System.out.println("Producto actualizado: " + p.getNombre());
             }
-            
+
         } catch (SQLException e) {
             System.err.println("ERROR al actualizar producto: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, null);
         }
-        
+
         return resultado;
     }
-    
+
     /**
      * Actualiza solo el stock de un producto (para ventas)
+     *
      * @param idProducto ID del producto
      * @param cantidadVendida Cantidad a restar del stock
      * @return int número de filas afectadas
@@ -116,32 +119,40 @@ public class ProductoDAO {
         Connection con = null;
         PreparedStatement ps = null;
         int resultado = 0;
-        
+
         try {
             con = conexion.crearConexion();
             String query = "UPDATE productos SET stock_actual = stock_actual - ? WHERE id_producto = ?";
             ps = con.prepareStatement(query);
             ps.setInt(1, cantidadVendida);
             ps.setInt(2, idProducto);
-            
+
             resultado = ps.executeUpdate();
-            
+
             if (resultado > 0) {
                 System.out.println("Stock actualizado para producto ID: " + idProducto);
             }
-            
+
         } catch (SQLException e) {
             System.err.println("ERROR al actualizar stock: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, null);
         }
-        
+
         return resultado;
     }
-    
+
     /**
      * Elimina un producto (soft delete)
+     *
+     * @param idProducto ID del producto
+     * @return int número de filas afectadas
+     */
+    /**
+     * Elimina un producto (soft delete) IMPORTANTE: Cambia el estado pero
+     * también podemos hacer hard delete si prefieres
+     *
      * @param idProducto ID del producto
      * @return int número de filas afectadas
      */
@@ -149,31 +160,39 @@ public class ProductoDAO {
         Connection con = null;
         PreparedStatement ps = null;
         int resultado = 0;
-        
+
         try {
             con = conexion.crearConexion();
+
+            // Opción 1: Soft delete (cambia estado a inactivo)
             String query = "UPDATE productos SET estado = 'inactivo' WHERE id_producto = ?";
+
+            // Opción 2: Hard delete (elimina físicamente - descomenta si prefieres esto)
+            // String query = "DELETE FROM productos WHERE id_producto = ?";
             ps = con.prepareStatement(query);
             ps.setInt(1, idProducto);
-            
+
             resultado = ps.executeUpdate();
-            
+
             if (resultado > 0) {
-                System.out.println("Producto eliminado: ID " + idProducto);
+                System.out.println("✓ Producto eliminado: ID " + idProducto);
+            } else {
+                System.err.println("⚠ No se encontró el producto con ID: " + idProducto);
             }
-            
+
         } catch (SQLException e) {
-            System.err.println("ERROR al eliminar producto: " + e.getMessage());
+            System.err.println("✗ ERROR al eliminar producto: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, null);
         }
-        
+
         return resultado;
     }
-    
+
     /**
      * Obtiene un producto por ID con información de categoría
+     *
      * @param idProducto ID del producto
      * @return Producto encontrado o null
      */
@@ -182,34 +201,35 @@ public class ProductoDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         Producto p = null;
-        
+
         try {
             con = conexion.crearConexion();
             String query = "SELECT p.*, c.nombre as nombre_categoria "
-                         + "FROM productos p "
-                         + "INNER JOIN categorias c ON p.id_categoria = c.id_categoria "
-                         + "WHERE p.id_producto = ?";
+                    + "FROM productos p "
+                    + "INNER JOIN categorias c ON p.id_categoria = c.id_categoria "
+                    + "WHERE p.id_producto = ?";
             ps = con.prepareStatement(query);
             ps.setInt(1, idProducto);
-            
+
             rs = ps.executeQuery();
-            
+
             if (rs.next()) {
                 p = mapearProducto(rs);
             }
-            
+
         } catch (SQLException e) {
             System.err.println("ERROR al obtener producto: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, rs);
         }
-        
+
         return p;
     }
-    
+
     /**
      * Obtiene un producto por código
+     *
      * @param codigo Código del producto
      * @return Producto encontrado o null
      */
@@ -218,139 +238,153 @@ public class ProductoDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         Producto p = null;
-        
+
         try {
             con = conexion.crearConexion();
             String query = "SELECT p.*, c.nombre as nombre_categoria "
-                         + "FROM productos p "
-                         + "INNER JOIN categorias c ON p.id_categoria = c.id_categoria "
-                         + "WHERE p.codigo = ? AND p.estado = 'activo'";
+                    + "FROM productos p "
+                    + "INNER JOIN categorias c ON p.id_categoria = c.id_categoria "
+                    + "WHERE p.codigo = ? AND p.estado = 'activo'";
             ps = con.prepareStatement(query);
             ps.setString(1, codigo);
-            
+
             rs = ps.executeQuery();
-            
+
             if (rs.next()) {
                 p = mapearProducto(rs);
             }
-            
+
         } catch (SQLException e) {
             System.err.println("ERROR al obtener producto por código: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, rs);
         }
-        
+
         return p;
     }
-    
+
     /**
-     * Lista todos los productos con información de categoría
-     * @return List de productos
+     * Lista todos los productos ACTIVOS con información de categoría
+     *
+     * @return List de productos activos
      */
     public List<Producto> listarProductos() {
         List<Producto> lista = new ArrayList<>();
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
+
         try {
             con = conexion.crearConexion();
+
+            // Solo traer productos activos
             String query = "SELECT p.*, c.nombre as nombre_categoria "
-                         + "FROM productos p "
-                         + "INNER JOIN categorias c ON p.id_categoria = c.id_categoria "
-                         + "ORDER BY p.nombre ASC";
+                    + "FROM productos p "
+                    + "INNER JOIN categorias c ON p.id_categoria = c.id_categoria "
+                    + "WHERE p.estado = 'activo' " // Solo productos activos
+                    + "ORDER BY p.nombre ASC";
+
             ps = con.prepareStatement(query);
             rs = ps.executeQuery();
-            
+
             while (rs.next()) {
                 lista.add(mapearProducto(rs));
             }
-            
-            System.out.println("Productos encontrados: " + lista.size());
-            
+
+            System.out.println("✓ Productos activos encontrados: " + lista.size());
+
         } catch (SQLException e) {
-            System.err.println("ERROR al listar productos: " + e.getMessage());
+            System.err.println("✗ ERROR al listar productos: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, rs);
         }
-        
+
         return lista;
     }
-    
+
     /**
      * Lista solo productos activos
+     *
      * @return List de productos activos
      */
-    public List<Producto> listarProductosActivos() {
+    /**
+     * Lista TODOS los productos (activos e inactivos) - útil para reportes
+     *
+     * @return List de todos los productos
+     */
+    public List<Producto> listarTodosProductos() {
         List<Producto> lista = new ArrayList<>();
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
+
         try {
             con = conexion.crearConexion();
             String query = "SELECT p.*, c.nombre as nombre_categoria "
-                         + "FROM productos p "
-                         + "INNER JOIN categorias c ON p.id_categoria = c.id_categoria "
-                         + "WHERE p.estado = 'activo' "
-                         + "ORDER BY p.nombre ASC";
+                    + "FROM productos p "
+                    + "INNER JOIN categorias c ON p.id_categoria = c.id_categoria "
+                    + "ORDER BY p.nombre ASC";
             ps = con.prepareStatement(query);
             rs = ps.executeQuery();
-            
+
             while (rs.next()) {
                 lista.add(mapearProducto(rs));
             }
-            
+
+            System.out.println("✓ Total productos (todos): " + lista.size());
+
         } catch (SQLException e) {
-            System.err.println("ERROR al listar productos activos: " + e.getMessage());
+            System.err.println("✗ ERROR al listar todos los productos: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, rs);
         }
-        
+
         return lista;
     }
-    
+
     /**
-     * Lista productos con stock bajo (stock_actual <= stock_minimo)
-     * @return List de productos con stock bajo
+     * Lista productos con stock bajo (stock_actual <= stock_minimo) @return
+     *
+     * List de productos con stock bajo
      */
     public List<Producto> listarProductosStockBajo() {
         List<Producto> lista = new ArrayList<>();
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
+
         try {
             con = conexion.crearConexion();
             String query = "SELECT p.*, c.nombre as nombre_categoria "
-                         + "FROM productos p "
-                         + "INNER JOIN categorias c ON p.id_categoria = c.id_categoria "
-                         + "WHERE p.stock_actual <= p.stock_minimo AND p.estado = 'activo' "
-                         + "ORDER BY p.stock_actual ASC";
+                    + "FROM productos p "
+                    + "INNER JOIN categorias c ON p.id_categoria = c.id_categoria "
+                    + "WHERE p.stock_actual <= p.stock_minimo AND p.estado = 'activo' "
+                    + "ORDER BY p.stock_actual ASC";
             ps = con.prepareStatement(query);
             rs = ps.executeQuery();
-            
+
             while (rs.next()) {
                 lista.add(mapearProducto(rs));
             }
-            
+
             System.out.println("⚠️ Productos con stock bajo: " + lista.size());
-            
+
         } catch (SQLException e) {
             System.err.println("ERROR al listar productos con stock bajo: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, rs);
         }
-        
+
         return lista;
     }
-    
+
     /**
      * Lista productos agotados (stock_actual = 0)
+     *
      * @return List de productos agotados
      */
     public List<Producto> listarProductosAgotados() {
@@ -358,35 +392,36 @@ public class ProductoDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
+
         try {
             con = conexion.crearConexion();
             String query = "SELECT p.*, c.nombre as nombre_categoria "
-                         + "FROM productos p "
-                         + "INNER JOIN categorias c ON p.id_categoria = c.id_categoria "
-                         + "WHERE p.stock_actual = 0 AND p.estado = 'activo' "
-                         + "ORDER BY p.nombre ASC";
+                    + "FROM productos p "
+                    + "INNER JOIN categorias c ON p.id_categoria = c.id_categoria "
+                    + "WHERE p.stock_actual = 0 AND p.estado = 'activo' "
+                    + "ORDER BY p.nombre ASC";
             ps = con.prepareStatement(query);
             rs = ps.executeQuery();
-            
+
             while (rs.next()) {
                 lista.add(mapearProducto(rs));
             }
-            
+
             System.out.println("?Productos agotados: " + lista.size());
-            
+
         } catch (SQLException e) {
             System.err.println("ERROR al listar productos agotados: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, rs);
         }
-        
+
         return lista;
     }
-    
+
     /**
      * Lista productos por categoría
+     *
      * @param idCategoria ID de la categoría
      * @return List de productos de la categoría
      */
@@ -395,34 +430,35 @@ public class ProductoDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
+
         try {
             con = conexion.crearConexion();
             String query = "SELECT p.*, c.nombre as nombre_categoria "
-                         + "FROM productos p "
-                         + "INNER JOIN categorias c ON p.id_categoria = c.id_categoria "
-                         + "WHERE p.id_categoria = ? AND p.estado = 'activo' "
-                         + "ORDER BY p.nombre ASC";
+                    + "FROM productos p "
+                    + "INNER JOIN categorias c ON p.id_categoria = c.id_categoria "
+                    + "WHERE p.id_categoria = ? AND p.estado = 'activo' "
+                    + "ORDER BY p.nombre ASC";
             ps = con.prepareStatement(query);
             ps.setInt(1, idCategoria);
             rs = ps.executeQuery();
-            
+
             while (rs.next()) {
                 lista.add(mapearProducto(rs));
             }
-            
+
         } catch (SQLException e) {
             System.err.println("ERROR al listar productos por categoría: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, rs);
         }
-        
+
         return lista;
     }
-    
+
     /**
      * Busca productos por nombre o código
+     *
      * @param termino Término de búsqueda
      * @return List de productos encontrados
      */
@@ -431,36 +467,37 @@ public class ProductoDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
+
         try {
             con = conexion.crearConexion();
             String query = "SELECT p.*, c.nombre as nombre_categoria "
-                         + "FROM productos p "
-                         + "INNER JOIN categorias c ON p.id_categoria = c.id_categoria "
-                         + "WHERE (p.nombre LIKE ? OR p.codigo LIKE ?) AND p.estado = 'activo' "
-                         + "ORDER BY p.nombre ASC";
+                    + "FROM productos p "
+                    + "INNER JOIN categorias c ON p.id_categoria = c.id_categoria "
+                    + "WHERE (p.nombre LIKE ? OR p.codigo LIKE ?) AND p.estado = 'activo' "
+                    + "ORDER BY p.nombre ASC";
             ps = con.prepareStatement(query);
             String busqueda = "%" + termino + "%";
             ps.setString(1, busqueda);
             ps.setString(2, busqueda);
             rs = ps.executeQuery();
-            
+
             while (rs.next()) {
                 lista.add(mapearProducto(rs));
             }
-            
+
         } catch (SQLException e) {
             System.err.println("ERROR al buscar productos: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, rs);
         }
-        
+
         return lista;
     }
-    
+
     /**
      * Verifica si un código de producto ya existe
+     *
      * @param codigo Código a verificar
      * @return true si existe, false si no
      */
@@ -469,31 +506,32 @@ public class ProductoDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         boolean existe = false;
-        
+
         try {
             con = conexion.crearConexion();
             String query = "SELECT COUNT(*) as total FROM productos WHERE codigo = ?";
             ps = con.prepareStatement(query);
             ps.setString(1, codigo);
-            
+
             rs = ps.executeQuery();
-            
+
             if (rs.next()) {
                 existe = rs.getInt("total") > 0;
             }
-            
+
         } catch (SQLException e) {
             System.err.println("ERROR al verificar código: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, rs);
         }
-        
+
         return existe;
     }
-    
+
     /**
      * Mapea un ResultSet a un objeto Producto
+     *
      * @param rs ResultSet con datos del producto
      * @return Producto mapeado
      * @throws SQLException si hay error al leer datos
@@ -515,15 +553,21 @@ public class ProductoDAO {
         p.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
         return p;
     }
-    
+
     /**
      * Cierra los recursos de base de datos
      */
     private void cerrarRecursos(Connection con, PreparedStatement ps, ResultSet rs) {
         try {
-            if (rs != null) rs.close();
-            if (ps != null) ps.close();
-            if (con != null) con.close();
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (con != null) {
+                con.close();
+            }
         } catch (SQLException e) {
             System.err.println("ERROR al cerrar recursos: " + e.getMessage());
         }

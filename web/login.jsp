@@ -181,9 +181,9 @@
                 }
             }
 
-            // Función de validación de login (versión mejorada)
+            /* Función de validación de login (versión mejorada)
             function handleLogin(e) {
-                e.preventDefault();
+                
 
                 const usuario = document.getElementById('usuario').value.trim();
                 const password = document.getElementById('password').value.trim();
@@ -223,7 +223,7 @@
                     // Reset button
                     loginBtn.disabled = false;
                 }
-            }
+            }*/
 
             // Función para efectos de interacción en inputs
             function addInputEffects() {
@@ -240,7 +240,7 @@
                 });
             }
 
-            // Función de inicialización
+            /* Función de inicialización
             function initializePage() {
                 // Event listeners
                 const loginForm = document.getElementById('loginForm');
@@ -267,7 +267,7 @@
                 document.addEventListener('DOMContentLoaded', initializePage);
             } else {
                 initializePage();
-            }
+            }*/
         </script>
     </body>
 </html>

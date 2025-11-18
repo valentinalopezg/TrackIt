@@ -3,28 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/src/java/modelo/Conexion.java</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/src/java/modelo/Usuario.java</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/src/java/modelo/Producto.java</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/src/java/modelo/Categoria.java</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/src/java/modelo/Venta.java</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/src/java/modelo/DetalleVenta.java</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/src/java/modelo/UsuarioDAO.java</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/src/java/modelo/CategoriaDAO.java</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/src/java/modelo/ProductoDAO.java</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/src/java/modelo/VentaDAO.java</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/src/java/controlador/LoginServlet.java</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/src/java/controlador/LogoutServlet.java</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/src/java/controlador/ProductoServlet.java</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/src/java/controlador/CategoriaServlet.java</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/src/java/controlador/UsuarioServlet.java</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/src/java/controlador/VentaServlet.java</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/web/login.jsp</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/web/css/dashboard.css</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/web/css/index.css</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/web/css/login.css</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/web/dashboard.jsp</file>
-            <file>file:/Users/Valentina/NetBeansProjects/Track!t/web/index.jsp</file>
+            <file>file:/Users/Valentina/NetBeansProjects/TrackIt/web/categorias/agregarCategoria.jsp</file>
+            <file>file:/Users/Valentina/NetBeansProjects/TrackIt/src/java/controlador/CategoriaServlet.java</file>
+            <file>file:/Users/Valentina/NetBeansProjects/TrackIt/web/css/categorias.css</file>
+            <file>file:/Users/Valentina/NetBeansProjects/TrackIt/web/categorias/editarCategoria.jsp</file>
+            <file>file:/Users/Valentina/NetBeansProjects/TrackIt/web/categorias/listarCategorias.jsp</file>
+            <file>file:/Users/Valentina/NetBeansProjects/TrackIt/web/dashboard.jsp</file>
         </group>
     </open-files>
 </project-private>

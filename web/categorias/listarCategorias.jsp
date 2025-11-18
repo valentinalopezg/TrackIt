@@ -163,7 +163,7 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
-                    <i class="fas fa-layer-group"></i> Lista de Categorías
+                    sLista de Categorías
                 </h3>
                 <% if (esAdmin) { %>
                 <a href="agregarCategoria.jsp" class="btn btn-primary">

@@ -1,4 +1,3 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
@@ -43,7 +42,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" data-section="categories">
+                    <a href="categorias/listarCategorias.jsp" class="nav-link" data-section="categories">
                         <i class="fas fa-layer-group"></i>
                         Categorías
                     </a>

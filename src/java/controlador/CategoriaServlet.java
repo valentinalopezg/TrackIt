@@ -92,9 +92,16 @@ public class CategoriaServlet extends HttpServlet {
             String nombre = request.getParameter("nombre");
             String descripcion = request.getParameter("descripcion");
             
+            // Validar que el nombre no esté vacío
+            if (nombre == null || nombre.trim().isEmpty()) {
+                request.setAttribute("error", "El nombre de la categoría es obligatorio");
+                request.getRequestDispatcher("categorias/agregarCategoria.jsp").forward(request, response);
+                return;
+            }
+            
             Categoria categoria = new Categoria();
-            categoria.setNombre(nombre);
-            categoria.setDescripcion(descripcion);
+            categoria.setNombre(nombre.trim());
+            categoria.setDescripcion(descripcion != null ? descripcion.trim() : "");
             categoria.setEstado("activa");
             
             CategoriaDAO categoriaDAO = new CategoriaDAO();
@@ -108,6 +115,7 @@ public class CategoriaServlet extends HttpServlet {
             }
             
         } catch (Exception e) {
+            System.err.println("Error al agregar categoría: " + e.getMessage());
             request.setAttribute("error", "Error: " + e.getMessage());
             request.getRequestDispatcher("categorias/agregarCategoria.jsp").forward(request, response);
         }
@@ -124,8 +132,8 @@ public class CategoriaServlet extends HttpServlet {
             
             Categoria categoria = new Categoria();
             categoria.setIdCategoria(idCategoria);
-            categoria.setNombre(nombre);
-            categoria.setDescripcion(descripcion);
+            categoria.setNombre(nombre.trim());
+            categoria.setDescripcion(descripcion != null ? descripcion.trim() : "");
             categoria.setEstado(estado);
             
             CategoriaDAO categoriaDAO = new CategoriaDAO();

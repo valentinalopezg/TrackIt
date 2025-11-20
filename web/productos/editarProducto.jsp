@@ -25,6 +25,8 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <!-- Dashboard CSS -->
         <link href="<%= request.getContextPath() %>/css/dashboard.css" rel="stylesheet">
+        <link href="<%= request.getContextPath() %>/css/producto.css" rel="stylesheet">
+        <link href="<%= request.getContextPath() %>/css/categorias.css" rel="stylesheet">
         <!-- Favicon -->
         <link href="<%= request.getContextPath() %>/images/favicon.png" rel="icon">
     </head>
@@ -100,7 +102,7 @@
                 <button class="sidebar-toggle" id="sidebarToggle">
                     <i class="fas fa-bars"></i>
                 </button>
-                <h1 class="page-title">Editar Producto</h1>
+                <h1 class="page-title">Gestión de Productos</h1>
             </div>
 
             <div class="topbar-right">
@@ -116,21 +118,25 @@
 
         <!-- Contenido principal -->
         <main class="main-content">
-            <!-- Breadcrumb -->
-            <nav aria-label="breadcrumb" style="margin-bottom: 1.5rem;">
-                <ol class="breadcrumb" style="background: transparent; padding: 0; margin: 0;">
-                    <li class="breadcrumb-item">
-                        <a href="<%= request.getContextPath() %>/dashboard.jsp" style="color: var(--primary-color);">
-                            <i class="fas fa-home"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a href="<%= request.getContextPath() %>/producto?accion=listar" style="color: var(--primary-color);">
-                            Productos
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">Editar Producto</li>
-                </ol>
+            <!-- Breadcrumbs (navegación visual) -->
+            <nav aria-label="breadcrumb" class="breadcrumb-container">
+                <div style="padding: 1rem 2rem;">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="<%= request.getContextPath() %>/dashboard.jsp">
+                                <i class="fas fa-home"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="<%= request.getContextPath() %>/producto?accion=listar">
+                                <i class="fas fa-cube"></i> Productos
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            <i class="fas fa-edit"></i> Editar Producto
+                        </li>
+                    </ol>
+                </div>
             </nav>
 
             <!-- Mensajes -->
@@ -147,13 +153,12 @@
                     <h2 class="card-title">
                         <i class="fas fa-edit"></i> Editar: <%= producto.getNombre() %>
                     </h2>
-                    <a href="<%= request.getContextPath() %>/producto?accion=listar" class="btn-back" 
-                       style="background: #e2e8f0; color: #4a5568; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none;">
+                    <a href="<%= request.getContextPath() %>/producto?accion=listar" class="btn-back">
                         <i class="fas fa-arrow-left"></i> Volver
                     </a>
                 </div>
 
-                <div style="padding: 2rem;">
+                <div class="container-producto">
                     <form action="<%= request.getContextPath() %>/producto" method="POST" id="formProducto">
                         <input type="hidden" name="accion" value="actualizar">
                         <input type="hidden" name="idProducto" value="<%= producto.getIdProducto() %>">
@@ -161,7 +166,7 @@
                         <div class="row">
                             <!-- Columna izquierda -->
                             <div class="col-md-6">
-                                <h5 style="color: var(--primary-color); margin-bottom: 1rem;">
+                                <h5 class="header-producto">
                                     <i class="fas fa-info-circle"></i> Información Básica
                                 </h5>
 
@@ -294,7 +299,7 @@
                                 <i class="fas fa-save"></i> Guardar Cambios
                             </button>
                             <a href="<%= request.getContextPath() %>/producto?accion=listar" 
-                               class="btn btn-light" style="padding: 0.75rem 2rem; margin-left: 0.5rem;">
+                               class="btn-secondary" style="padding: 0.75rem 2rem; margin-left: 0.5rem;">
                                 <i class="fas fa-times"></i> Cancelar
                             </a>
                         </div>
@@ -326,57 +331,9 @@
                     const porcentaje = ((margen / precioCompra) * 100).toFixed(2);
                     
                     if (margen > 0) {
-                        margenSpan.innerHTML = '<span style="color: #22c55e;"><i class="fas fa-arrow-up"></i> Ganancia: 
-
-            // Validación
-            document.getElementById('formProducto').addEventListener('submit', function(e) {
-                const precioCompra = parseFloat(document.getElementById('precioCompra').value);
-                const precioVenta = parseFloat(document.getElementById('precioVenta').value);
-                const stockMinimo = parseInt(document.getElementById('stockMinimo').value);
-                const stockMaximo = parseInt(document.getElementById('stockMaximo').value);
-                
-                if (precioVenta < precioCompra) {
-                    if (!confirm('⚠️ El precio de venta es menor que el precio de compra. ¿Continuar?')) {
-                        e.preventDefault();
-                        return false;
-                    }
-                }
-                
-                if (stockMaximo < stockMinimo) {
-                    alert('❌ El stock máximo debe ser mayor que el stock mínimo');
-                    e.preventDefault();
-                    return false;
-                }
-            });
-        </script>
-    </body>
-</html> + margen.toFixed(2) + ' (' + porcentaje + '%)</span>';
+                        margenSpan.innerHTML = '<span style="color: #22c55e;"><i class="fas fa-arrow-up"></i> Ganancia: $' + margen.toFixed(2) + ' (' + porcentaje + '%)</span>';
                     } else if (margen < 0) {
-                        margenSpan.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-triangle"></i> Pérdida: 
-
-            // Validación
-            document.getElementById('formProducto').addEventListener('submit', function(e) {
-                const precioCompra = parseFloat(document.getElementById('precioCompra').value);
-                const precioVenta = parseFloat(document.getElementById('precioVenta').value);
-                const stockMinimo = parseInt(document.getElementById('stockMinimo').value);
-                const stockMaximo = parseInt(document.getElementById('stockMaximo').value);
-                
-                if (precioVenta < precioCompra) {
-                    if (!confirm('⚠️ El precio de venta es menor que el precio de compra. ¿Continuar?')) {
-                        e.preventDefault();
-                        return false;
-                    }
-                }
-                
-                if (stockMaximo < stockMinimo) {
-                    alert('❌ El stock máximo debe ser mayor que el stock mínimo');
-                    e.preventDefault();
-                    return false;
-                }
-            });
-        </script>
-    </body>
-</html> + Math.abs(margen).toFixed(2) + '</span>';
+                        margenSpan.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-triangle"></i> Pérdida: $' + Math.abs(margen).toFixed(2) + '</span>';
                     } else {
                         margenSpan.innerHTML = '<span style="color: #f59e0b;">Sin ganancia</span>';
                     }
@@ -403,6 +360,15 @@
                     return false;
                 }
             });
+
+            // Auto-cerrar alertas
+            setTimeout(function() {
+                const alerts = document.querySelectorAll('.alert');
+                alerts.forEach(alert => {
+                    const bsAlert = bootstrap.Alert.getInstance(alert);
+                    if (bsAlert) bsAlert.close();
+                });
+            }, 5000);
         </script>
     </body>
 </html>

@@ -127,18 +127,25 @@
                 </div>
             </div>
         </div>
-    </header>
-
-    <!-- Breadcrumbs (navegación visual) -->
-    <nav aria-label="breadcrumb" style="padding: 1rem 2rem; background: #f8f9fa;">
-        <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="../dashboard.jsp">Dashboard</a></li>
-            <li class="breadcrumb-item active">Categorías</li>
-        </ol>
-    </nav>      
+    </header>    
     
     <!-- Main Content -->
     <main class="main-content">
+        <!-- Breadcrumbs (navegación visual) -->
+        <nav aria-label="breadcrumb" style="padding: 1rem 2rem; background: #f8f9fa;">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="../dashboard.jsp">
+                        <i class="fas fa-home"></i> Dashboard
+                    </a>
+                </li>
+                <li class="breadcrumb-item active"
+                    <a href="listarCategorias.jsp">
+                        <i class="fas fa-layer-group"></i> Categorías
+                    </a>
+                </li>
+            </ol>
+        </nav>  
         <!-- Alertas -->
         <% 
         String success = request.getParameter("success");
@@ -278,9 +285,90 @@
                 </div>
             </div>
         </div>
+                <!-- Modal de confirmación de eliminación - CATEGORÍAS -->
+<div class="modal fade" id="modalEliminarCategoria" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-mejorado">
+            <!-- Header con icono -->
+            <div class="modal-header modal-header-warning">
+                <div class="modal-header-content">
+                    <div class="modal-icon-circle warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h5 class="modal-title">
+                        Inactivar Categoría
+                    </h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Body mejorado -->
+            <div class="modal-body modal-body-mejorado">
+                <div class="modal-text-center">
+                    <p class="modal-label">
+                        Estás a punto de inactivar:
+                    </p>
+                    <h4 id="nombreCategoriaEliminar" class="modal-item-name warning">
+                        ---
+                    </h4>
+                </div>
+
+                <div class="modal-alert-box warning">
+                    <div class="modal-alert-content">
+                        <i class="fas fa-info-circle modal-alert-icon"></i>
+                        <p class="modal-alert-text">
+                            <strong>Advertencia:</strong> Esta categoría será inactivada. Los productos asociados seguirán en el sistema.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="modal-info-box">
+                    <p class="modal-info-text">
+                        <i class="fas fa-check-circle modal-info-icon"></i>
+                        Asegúrate antes de continuar
+                    </p>
+                </div>
+            </div>
+
+            <!-- Footer mejorado -->
+            <div class="modal-footer modal-footer-mejorado">
+                <button type="button" class="btn btn-modal-cancel" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <a id="btnConfirmarEliminarCategoria" href="#" class="btn btn-modal-delete warning">
+                    <i class="fas fa-ban"></i> Inactivar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    // Función para confirmar eliminación de categoría
+    function confirmarEliminarCategoria(id, nombre) {
+        document.getElementById('nombreCategoriaEliminar').textContent = nombre;
+        document.getElementById('btnConfirmarEliminarCategoria').href = 
+            '<%= request.getContextPath() %>/categoria?accion=eliminar&id=' + id;
+        
+        const modal = new bootstrap.Modal(document.getElementById('modalEliminarCategoria'));
+        modal.show();
+    }
+
+    // Interceptar clics en botones de eliminar
+    document.querySelectorAll('a[href*="accion=eliminar"]').forEach(link => {
+        link.onclick = function(e) {
+            e.preventDefault();
+            const url = this.href;
+            const id = new URLSearchParams(new URL(url, window.location.origin).search).get('id');
+            const nombre = this.closest('tr').querySelector('td:nth-child(2)').textContent.trim();
+            
+            confirmarEliminarCategoria(id, nombre);
+        };
+    });
+</script>
     <script>
         // Toggle sidebar
         document.getElementById('sidebarToggle')?.addEventListener('click', function() {

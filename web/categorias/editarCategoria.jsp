@@ -126,7 +126,7 @@
             <button class="sidebar-toggle" id="sidebarToggle">
                 <i class="fas fa-bars"></i>
             </button>
-            <h1 class="page-title">Editar Categoría</h1>
+            <h1 class="page-title">Gestión de Categorías</h1>
         </div>
 
         <div class="topbar-right">
@@ -139,9 +139,29 @@
             </div>
         </div>
     </header>
-
+                
     <!-- Main Content -->
     <main class="main-content">
+        <!-- Breadcrumbs (navegación visual) -->
+        <nav aria-label="breadcrumb" class="breadcrumb-container">
+            <div style="padding: 1rem 2rem;">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="../dashboard.jsp">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="listarCategorias.jsp">
+                            <i class="fas fa-layer-group"></i> Categorías
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <i class="fas fa-edit"></i> Editar Categoría
+                    </li>
+                </ol>
+            </div>
+    </nav>  
         <div class="container-edicion">
             <div class="header-edicion">
                 <h1>

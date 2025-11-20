@@ -17,6 +17,8 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <!-- Dashboard CSS -->
         <link href="<%= request.getContextPath() %>/css/dashboard.css" rel="stylesheet">
+        <link href="<%= request.getContextPath() %>/css/producto.css" rel="stylesheet">
+        <link href="<%= request.getContextPath() %>/css/categorias.css" rel="stylesheet">
         <!-- Favicon -->
         <link href="<%= request.getContextPath() %>/images/favicon.png" rel="icon">
     </head>
@@ -92,7 +94,7 @@
                 <button class="sidebar-toggle" id="sidebarToggle">
                     <i class="fas fa-bars"></i>
                 </button>
-                <h1 class="page-title">Agregar Nuevo Producto</h1>
+                <h1 class="page-title">Gestión de Productos</h1>
             </div>
 
             <div class="topbar-right">
@@ -108,21 +110,25 @@
 
         <!-- Contenido principal -->
         <main class="main-content">
-            <!-- Breadcrumb -->
-            <nav aria-label="breadcrumb" style="margin-bottom: 1.5rem;">
-                <ol class="breadcrumb" style="background: transparent; padding: 0; margin: 0;">
-                    <li class="breadcrumb-item">
-                        <a href="<%= request.getContextPath() %>/dashboard.jsp" style="color: var(--primary-color);">
-                            <i class="fas fa-home"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a href="<%= request.getContextPath() %>/producto?accion=listar" style="color: var(--primary-color);">
-                            Productos
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">Agregar Producto</li>
-                </ol>
+            <!-- Breadcrumbs (navegación visual) -->        
+            <nav aria-label="breadcrumb" class="breadcrumb-container">
+                <div style="padding: 1rem 2rem;">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="<%= request.getContextPath() %>/dashboard.jsp">
+                                <i class="fas fa-home"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="<%= request.getContextPath() %>/producto?accion=listar">
+                                <i class="fas fa-cube"></i> Productos
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            <i class="fas fa-plus-circle"></i> Agregar Producto
+                        </li>
+                    </ol>
+                </div>
             </nav>
 
             <!-- Mensajes de error -->
@@ -137,22 +143,21 @@
             <div class="card">
                 <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                     <h2 class="card-title">
-                        <i class="fas fa-plus-circle"></i> Nuevo Producto
+                        <i class="fas fa-plus-circle"></i> Agregar Producto
                     </h2>
-                    <a href="<%= request.getContextPath() %>/producto?accion=listar" class="btn-back" 
-                       style="background: #e2e8f0; color: #4a5568; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none;">
+                    <a href="<%= request.getContextPath() %>/producto?accion=listar" class="btn-back">
                         <i class="fas fa-arrow-left"></i> Volver
                     </a>
                 </div>
 
-                <div style="padding: 2rem;">
+                <div class="container-producto">
                     <form action="<%= request.getContextPath() %>/producto" method="POST" id="formProducto">
                         <input type="hidden" name="accion" value="agregar">
 
                         <div class="row">
                             <!-- Columna izquierda -->
                             <div class="col-md-6">
-                                <h5 style="color: var(--primary-color); margin-bottom: 1rem;">
+                                <h5 class="header-producto" style="margin-bottom: 1rem;">
                                     <i class="fas fa-info-circle"></i> Información Básica
                                 </h5>
 
@@ -277,11 +282,8 @@
                             <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem;">
                                 <i class="fas fa-save"></i> Guardar Producto
                             </button>
-                            <button type="reset" class="btn btn-secondary" style="padding: 0.75rem 2rem; margin-left: 0.5rem;">
-                                <i class="fas fa-undo"></i> Limpiar
-                            </button>
                             <a href="<%= request.getContextPath() %>/producto?accion=listar" 
-                               class="btn btn-light" style="padding: 0.75rem 2rem; margin-left: 0.5rem;">
+                               class="btn-secondary" style="padding: 0.75rem 2rem; margin-left: 0.5rem;">
                                 <i class="fas fa-times"></i> Cancelar
                             </a>
                         </div>
@@ -292,8 +294,7 @@
 
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
-        <script>
+<script>
             // Toggle sidebar
             document.getElementById('sidebarToggle').addEventListener('click', function() {
                 document.getElementById('sidebar').classList.toggle('active');
@@ -310,75 +311,9 @@
                     const porcentaje = ((margen / precioCompra) * 100).toFixed(2);
                     
                     if (margen > 0) {
-                        margenSpan.innerHTML = '<span style="color: #22c55e;"><i class="fas fa-arrow-up"></i> Ganancia: 
-
-            // Validación antes de enviar
-            document.getElementById('formProducto').addEventListener('submit', function(e) {
-                const precioCompra = parseFloat(document.getElementById('precioCompra').value);
-                const precioVenta = parseFloat(document.getElementById('precioVenta').value);
-                const stockMinimo = parseInt(document.getElementById('stockMinimo').value);
-                const stockMaximo = parseInt(document.getElementById('stockMaximo').value);
-                
-                if (precioVenta < precioCompra) {
-                    if (!confirm('⚠️ El precio de venta es menor que el precio de compra. Esto generará pérdidas. ¿Desea continuar?')) {
-                        e.preventDefault();
-                        return false;
-                    }
-                }
-                
-                if (stockMaximo < stockMinimo) {
-                    alert('❌ El stock máximo debe ser mayor que el stock mínimo');
-                    e.preventDefault();
-                    return false;
-                }
-            });
-
-            // Auto-cerrar alertas
-            setTimeout(function() {
-                const alerts = document.querySelectorAll('.alert');
-                alerts.forEach(alert => {
-                    const bsAlert = bootstrap.Alert.getInstance(alert);
-                    if (bsAlert) bsAlert.close();
-                });
-            }, 5000);
-        </script>
-    </body>
-</html> + margen.toFixed(2) + ' (' + porcentaje + '%)</span>';
+                        margenSpan.innerHTML = '<span style="color: #22c55e;"><i class="fas fa-arrow-up"></i> Ganancia: $' + margen.toFixed(2) + ' (' + porcentaje + '%)</span>';
                     } else if (margen < 0) {
-                        margenSpan.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-triangle"></i> Pérdida: 
-
-            // Validación antes de enviar
-            document.getElementById('formProducto').addEventListener('submit', function(e) {
-                const precioCompra = parseFloat(document.getElementById('precioCompra').value);
-                const precioVenta = parseFloat(document.getElementById('precioVenta').value);
-                const stockMinimo = parseInt(document.getElementById('stockMinimo').value);
-                const stockMaximo = parseInt(document.getElementById('stockMaximo').value);
-                
-                if (precioVenta < precioCompra) {
-                    if (!confirm('⚠️ El precio de venta es menor que el precio de compra. Esto generará pérdidas. ¿Desea continuar?')) {
-                        e.preventDefault();
-                        return false;
-                    }
-                }
-                
-                if (stockMaximo < stockMinimo) {
-                    alert('❌ El stock máximo debe ser mayor que el stock mínimo');
-                    e.preventDefault();
-                    return false;
-                }
-            });
-
-            // Auto-cerrar alertas
-            setTimeout(function() {
-                const alerts = document.querySelectorAll('.alert');
-                alerts.forEach(alert => {
-                    const bsAlert = bootstrap.Alert.getInstance(alert);
-                    if (bsAlert) bsAlert.close();
-                });
-            }, 5000);
-        </script>
-    </body>
-</html> + Math.abs(margen).toFixed(2) + '</span>';
+                        margenSpan.innerHTML = '<span style="color: #ef4444;"><i class="fas fa-exclamation-triangle"></i> Pérdida: $' + Math.abs(margen).toFixed(2) + '</span>';
                     } else {
                         margenSpan.innerHTML = '<span style="color: #f59e0b;">Sin ganancia</span>';
                     }

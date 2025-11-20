@@ -23,8 +23,10 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <!-- Dashboard CSS -->
         <link href="<%= request.getContextPath() %>/css/dashboard.css" rel="stylesheet">
+        <link href="<%= request.getContextPath() %>/css/producto.css" rel="stylesheet">
         <!-- Favicon -->
         <link href="<%= request.getContextPath() %>/images/favicon.png" rel="icon">
+        <link href="<%= request.getContextPath() %>/css/categorias.css" rel="stylesheet">
     </head>
     <body>
         <!-- Sidebar -->
@@ -111,6 +113,21 @@
 
         <!-- Contenido principal -->
         <main class="main-content">
+            <!-- Breadcrumbs -->
+            <nav aria-label="breadcrumb" class="breadcrumb-container">
+                <div style="padding: 1rem 2rem;">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="<%= request.getContextPath() %>/dashboard.jsp">
+                                <i class="fas fa-home"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            <i class="fas fa-cube"></i> Productos
+                        </li>
+                    </ol>
+                </div>
+            </nav>
             <!-- Mensajes de éxito/error -->
             <% if (mensaje != null && !mensaje.isEmpty()) { %>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -129,10 +146,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">
-                        <i class="fa-solid fa-boxes-stacked"></i> Lista de Productos
+                        Lista de Productos
                     </h2>
-                    <a href="<%= request.getContextPath() %>/producto?accion=nuevo" class="btn-info">
-                        <i class="fa-solid fa-plus"></i> Nuevo Producto
+                    <a href="<%= request.getContextPath() %>/producto?accion=nuevo" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Nuevo Producto
                     </a>
                 </div>
 
@@ -238,7 +255,7 @@
                                     <th style="width: 100px;">Stock</th>
                                     <th style="width: 120px;">Precio</th>
                                     <th style="width: 120px;">Estado</th>
-                                    <th style="width: 160px;">Acciones</th>
+                                    <th style="width: 110px;">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -293,7 +310,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <div class="action-buttons" style="display: flex; gap: 0.5rem;">
+                                        <div class="action-buttons" style="display: flex; gap: 0.5rem; justify-content: center;">
                                             <a href="<%= request.getContextPath() %>/producto?accion=editar&id=<%= id %>" 
                                                class="btn-action" 
                                                title="Editar producto"
@@ -306,12 +323,6 @@
                                                     style="background: var(--danger-color); color: white; padding: 0.5rem; border-radius: 6px; border: none; cursor: pointer;">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
-                                            <a href="<%= request.getContextPath() %>/producto?accion=ver&id=<%= id %>" 
-                                               class="btn-action" 
-                                               title="Ver detalles"
-                                               style="background: var(--primary-color); color: white; padding: 0.5rem; border-radius: 6px;">
-                                                <i class="fa-solid fa-eye"></i>
-                                            </a>
                                         </div>
                                     </td>
                                 </tr>
@@ -342,34 +353,65 @@
                     <% } %>
                 </div>
             </div>
-        </main>
+<!-- Modal de confirmación de eliminación - PRODUCTOS -->
+<div class="modal fade" id="modalEliminar" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-mejorado">
+            <!-- Header con icono -->
+            <div class="modal-header modal-header-danger">
+                <div class="modal-header-content">
+                    <div class="modal-icon-circle danger">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h5 class="modal-title">
+                        Inactivar Producto
+                    </h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
 
-        <!-- Modal de confirmación de eliminación -->
-        <div class="modal fade" id="modalEliminar" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header" style="background: var(--danger-color); color: white;">
-                        <h5 class="modal-title">
-                            <i class="fas fa-exclamation-triangle"></i> Confirmar Eliminación
-                        </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>¿Estás seguro de que deseas eliminar el producto:</p>
-                        <h5 id="nombreProductoEliminar" style="color: var(--danger-color);"></h5>
-                        <p class="text-muted">Esta acción no se puede deshacer.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="fas fa-times"></i> Cancelar
-                        </button>
-                        <a id="btnConfirmarEliminar" href="#" class="btn btn-danger">
-                            <i class="fas fa-trash"></i> Eliminar
-                        </a>
+            <!-- Body mejorado -->
+            <div class="modal-body modal-body-mejorado">
+                <div class="modal-text-center">
+                    <p class="modal-label">
+                        Estás a punto de inactivar:
+                    </p>
+                    <h4 id="nombreProductoEliminar" class="modal-item-name danger">
+                        ---
+                    </h4>
+                </div>
+
+                <div class="modal-alert-box danger">
+                    <div class="modal-alert-content">
+                        <i class="fas fa-info-circle modal-alert-icon"></i>
+                        <p class="modal-alert-text">
+                            <strong>Advertencia:</strong> El producto será inactivado. Podrás reactivarlo posteriormente si es necesario.
+                        </p>
                     </div>
                 </div>
+
+                <div class="modal-info-box">
+                    <p class="modal-info-text">
+                        <i class="fas fa-check-circle modal-info-icon"></i>
+                        Asegúrate antes de continuar
+                    </p>
+                </div>
+            </div>
+
+            <!-- Footer mejorado -->
+            <div class="modal-footer modal-footer-mejorado">
+                <button type="button" class="btn btn-modal-cancel" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <a id="btnConfirmarEliminar" href="#" class="btn btn-modal-delete danger">
+                    <i class="fas fa-ban"></i> Inactivar
+                </a>
             </div>
         </div>
+    </div>
+</div>
+        </main>
+
 
         <!-- Bootstrap JavaScript -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -453,6 +495,51 @@
                     });
                 }, 5000);
             });
+
+            // Ordenar Columnas con indicadores visuales
+            let currentSortColumn = -1;
+            let currentSortOrder = 'asc';
+
+            document.querySelectorAll('.data-table th').forEach((header, index) => {
+                if (index < 6) { // Solo las primeras 6 columnas (no "Acciones")
+                    header.classList.add('sortable');
+                    header.addEventListener('click', () => {
+                        sortTable(index, header);
+                    });
+                }
+            });
+
+            function sortTable(columnIndex, headerElement) {
+                const table = document.querySelector('.data-table tbody');
+                const rows = Array.from(table.querySelectorAll('tr'));
+
+                // Determinar orden
+                if (currentSortColumn === columnIndex) {
+                    currentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
+                } else {
+                    currentSortOrder = 'asc';
+                }
+                currentSortColumn = columnIndex;
+
+                // Ordenar filas
+                rows.sort((a, b) => {
+                    const aText = a.cells[columnIndex].textContent.trim();
+                    const bText = b.cells[columnIndex].textContent.trim();
+
+                    let comparison = aText.localeCompare(bText, 'es', { numeric: true });
+                    return currentSortOrder === 'asc' ? comparison : -comparison;
+                });
+
+                // Actualizar tabla
+                rows.forEach(row => table.appendChild(row));
+
+                // Actualizar indicadores visuales
+                document.querySelectorAll('.data-table th').forEach(th => {
+                    th.classList.remove('sorted-asc', 'sorted-desc');
+                });
+
+                headerElement.classList.add(currentSortOrder === 'asc' ? 'sorted-asc' : 'sorted-desc');
+            }
         </script>
     </body>
 </html>

@@ -27,111 +27,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categorías - Track!t</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="../css/dashboard.css" rel="stylesheet">
+    <jsp:include page="/includes/head.jsp" />
     <link href="../css/categorias.css" rel="stylesheet">
+    <title>Categorías - Track!t</title>
 </head>
 <body>
-    <!-- Sidebar -->
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="sidebar-logo">Track!t</div>
-            <div class="sidebar-subtitle">Sistema de Inventarios</div>
-        </div>
-
-        <ul class="sidebar-nav">
-            <li class="nav-item">
-                <a href="<%= request.getContextPath() %>/dashboard.jsp" class="nav-link">
-                    <i class="fas fa-chart-pie"></i>
-                    Dashboard
-                </a>
-            </li>
-
-            <div class="nav-section-title">Inventario</div>
-            <li class="nav-item">
-                <a href="<%= request.getContextPath() %>/producto?accion=listar" class="nav-link">
-                    <i class="fas fa-cube"></i>
-                    Productos
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="<%= request.getContextPath() %>/categorias/listarCategorias.jsp" class="nav-link active">
-                    <i class="fas fa-layer-group"></i>
-                    Categorías
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-boxes"></i>
-                    Control de Stock
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-truck"></i>
-                    Proveedores
-                </a>
-            </li>
-
-            <div class="nav-section-title">Ventas</div>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-cash-register"></i>
-                    Nueva Venta
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-receipt"></i>
-                    Historial Ventas
-                </a>
-            </li>
-
-            <div class="nav-section-title">Sistema</div>
-            <li class="nav-item">
-                <a href="<%= request.getContextPath() %>/index.jsp" class="nav-link">
-                    <i class="fas fa-cog"></i>
-                    Configuración
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="<%= request.getContextPath() %>/index.jsp" class="nav-link">
-                    <i class="fas fa-sign-out-alt"></i>
-                    Cerrar Sesión
-                </a>
-            </li>
-        </ul>
-    </nav>
-
-    <!-- Top Bar -->
-    <header class="topbar">
-        <div class="topbar-left">
-            <button class="sidebar-toggle" id="sidebarToggle">
-                <i class="fas fa-bars"></i>
-            </button>
-            <h1 class="page-title">Gestión de Categorías</h1>
-        </div>
-
-        <div class="topbar-right">
-            <div class="user-info">
-                <div class="user-avatar"><%= usuarioLogueado.getNombre().substring(0, 1).toUpperCase() %></div>
-                <div class="user-details">
-                    <div class="user-name"><%= usuarioLogueado.getNombreCompleto() %></div>
-                    <div class="user-role"><%= usuarioLogueado.getRol().toUpperCase() %></div>
-                </div>
-            </div>
-        </div>
-    </header>    
+    <jsp:include page="/includes/sidebar.jsp" />
+    <jsp:include page="/includes/topbar.jsp" />
     
-    <!-- Main Content -->
     <main class="main-content">
-        <!-- Breadcrumbs (navegación visual) -->
+        <!-- Breadcrumbs -->
         <nav aria-label="breadcrumb" style="padding: 1rem 2rem; background: #f8f9fa;">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
@@ -139,13 +44,12 @@
                         <i class="fas fa-home"></i> Dashboard
                     </a>
                 </li>
-                <li class="breadcrumb-item active"
-                    <a href="listarCategorias.jsp">
-                        <i class="fas fa-layer-group"></i> Categorías
-                    </a>
+                <li class="breadcrumb-item active">
+                    <i class="fas fa-layer-group"></i> Categorías
                 </li>
             </ol>
-        </nav>  
+        </nav>
+        
         <!-- Alertas -->
         <% 
         String success = request.getParameter("success");
@@ -186,9 +90,7 @@
         <!-- Card Principal -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">
-                    Lista de Categorías
-                </h3>
+                <h3 class="card-title">Lista de Categorías</h3>
                 <% if (esAdmin) { %>
                 <a href="agregarCategoria.jsp" class="btn btn-primary">
                     <i class="fas fa-plus"></i> Nueva Categoría
@@ -196,19 +98,19 @@
                 <% } %>
             </div>
             
-        <!-- Filtro/Búsqueda  --> 
-        <div class="search-container" style="padding: 1.5rem; border-bottom: 1px solid #e2e8f0;">
-            <div class="input-group">
-                <span class="input-group-text" style="background: #f7fafc; border-right: none;">
-                    <i class="fas fa-search" style="color: #718096;"></i>
-                </span>
-                <input type="text" 
-                       id="searchInput" 
-                       class="form-control" 
-                       style="border-left: none;"
-                       placeholder="Buscar categoría por nombre o descripción...">
+            <!-- Filtro/Búsqueda -->
+            <div class="search-container" style="padding: 1.5rem; border-bottom: 1px solid #e2e8f0;">
+                <div class="input-group">
+                    <span class="input-group-text" style="background: #f7fafc; border-right: none;">
+                        <i class="fas fa-search" style="color: #718096;"></i>
+                    </span>
+                    <input type="text" 
+                           id="searchInput" 
+                           class="form-control" 
+                           style="border-left: none;"
+                           placeholder="Buscar categoría por nombre o descripción...">
+                </div>
             </div>
-        </div>
             
             <div class="table-responsive">
                 <table class="data-table">
@@ -285,105 +187,15 @@
                 </div>
             </div>
         </div>
-                <!-- Modal de confirmación de eliminación - CATEGORÍAS -->
-<div class="modal fade" id="modalEliminarCategoria" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content modal-content-mejorado">
-            <!-- Header con icono -->
-            <div class="modal-header modal-header-warning">
-                <div class="modal-header-content">
-                    <div class="modal-icon-circle warning">
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <h5 class="modal-title">
-                        Inactivar Categoría
-                    </h5>
-                </div>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-
-            <!-- Body mejorado -->
-            <div class="modal-body modal-body-mejorado">
-                <div class="modal-text-center">
-                    <p class="modal-label">
-                        Estás a punto de inactivar:
-                    </p>
-                    <h4 id="nombreCategoriaEliminar" class="modal-item-name warning">
-                        ---
-                    </h4>
-                </div>
-
-                <div class="modal-alert-box warning">
-                    <div class="modal-alert-content">
-                        <i class="fas fa-info-circle modal-alert-icon"></i>
-                        <p class="modal-alert-text">
-                            <strong>Advertencia:</strong> Esta categoría será inactivada. Los productos asociados seguirán en el sistema.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="modal-info-box">
-                    <p class="modal-info-text">
-                        <i class="fas fa-check-circle modal-info-icon"></i>
-                        Asegúrate antes de continuar
-                    </p>
-                </div>
-            </div>
-
-            <!-- Footer mejorado -->
-            <div class="modal-footer modal-footer-mejorado">
-                <button type="button" class="btn btn-modal-cancel" data-bs-dismiss="modal">
-                    <i class="fas fa-times"></i> Cancelar
-                </button>
-                <a id="btnConfirmarEliminarCategoria" href="#" class="btn btn-modal-delete warning">
-                    <i class="fas fa-ban"></i> Inactivar
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <jsp:include page="/includes/scripts.jsp" />
+    
+    <!-- Scripts específicos de categorías -->
     <script>
-    // Función para confirmar eliminación de categoría
-    function confirmarEliminarCategoria(id, nombre) {
-        document.getElementById('nombreCategoriaEliminar').textContent = nombre;
-        document.getElementById('btnConfirmarEliminarCategoria').href = 
-            '<%= request.getContextPath() %>/categoria?accion=eliminar&id=' + id;
+        // Personalizar título de la página
+        document.getElementById('pageTitle').textContent = 'Gestión de Categorías';
         
-        const modal = new bootstrap.Modal(document.getElementById('modalEliminarCategoria'));
-        modal.show();
-    }
-
-    // Interceptar clics en botones de eliminar
-    document.querySelectorAll('a[href*="accion=eliminar"]').forEach(link => {
-        link.onclick = function(e) {
-            e.preventDefault();
-            const url = this.href;
-            const id = new URLSearchParams(new URL(url, window.location.origin).search).get('id');
-            const nombre = this.closest('tr').querySelector('td:nth-child(2)').textContent.trim();
-            
-            confirmarEliminarCategoria(id, nombre);
-        };
-    });
-</script>
-    <script>
-        // Toggle sidebar
-        document.getElementById('sidebarToggle')?.addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('active');
-        });
-
-        // Auto-hide alerts
-        setTimeout(function() {
-            const alerts = document.querySelectorAll('.alert');
-            alerts.forEach(alert => {
-                const bsAlert = new bootstrap.Alert(alert);
-                bsAlert.close();
-            });
-        }, 5000);
-
         // Filtro/Búsqueda
         document.getElementById('searchInput').addEventListener('keyup', function() {
             const searchValue = this.value.toLowerCase();
@@ -395,12 +207,12 @@
             });
         });
 
-        // Ordenar Columnas con indicadores visuales
+        // Ordenar Columnas
         let currentSortColumn = -1;
         let currentSortOrder = 'asc';
 
         document.querySelectorAll('.data-table th').forEach((header, index) => {
-            if (index < 4) { // Solo las primeras 4 columnas (no "Acciones")
+            if (index < 4) {
                 header.classList.add('sortable');
                 header.addEventListener('click', () => {
                     sortTable(index, header);
@@ -412,7 +224,6 @@
             const table = document.querySelector('.data-table tbody');
             const rows = Array.from(table.querySelectorAll('tr'));
 
-            // Determinar orden
             if (currentSortColumn === columnIndex) {
                 currentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
             } else {
@@ -420,19 +231,15 @@
             }
             currentSortColumn = columnIndex;
 
-            // Ordenar filas
             rows.sort((a, b) => {
                 const aText = a.cells[columnIndex].textContent.trim();
                 const bText = b.cells[columnIndex].textContent.trim();
-
                 let comparison = aText.localeCompare(bText, 'es', { numeric: true });
                 return currentSortOrder === 'asc' ? comparison : -comparison;
             });
 
-            // Actualizar tabla
             rows.forEach(row => table.appendChild(row));
 
-            // Actualizar indicadores visuales
             document.querySelectorAll('.data-table th').forEach(th => {
                 th.classList.remove('sorted-asc', 'sorted-desc');
             });

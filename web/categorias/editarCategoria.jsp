@@ -36,113 +36,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Categoría - Track!t</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="../css/dashboard.css" rel="stylesheet">
+    <jsp:include page="/includes/head.jsp" />
     <link href="../css/categorias.css" rel="stylesheet">
+    <title>Editar Categoría - Track!t</title>
 </head>
 <body>
-    <!-- Sidebar -->
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="sidebar-logo">Track!t</div>
-            <div class="sidebar-subtitle">Sistema de Inventarios</div>
-        </div>
-
-        <ul class="sidebar-nav">
-            <li class="nav-item">
-                <a href="<%= request.getContextPath() %>/dashboard.jsp" class="nav-link">
-                    <i class="fas fa-chart-pie"></i>
-                    Dashboard
-                </a>
-            </li>
-
-            <div class="nav-section-title">Inventario</div>
-            <li class="nav-item">
-                <a href="<%= request.getContextPath() %>/producto?accion=listar" class="nav-link">
-                    <i class="fas fa-cube"></i>
-                    Productos
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="<%= request.getContextPath() %>/categorias/listarCategorias.jsp" class="nav-link active">
-                    <i class="fas fa-layer-group"></i>
-                    Categorías
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-boxes"></i>
-                    Control de Stock
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-truck"></i>
-                    Proveedores
-                </a>
-            </li>
-
-            <div class="nav-section-title">Ventas</div>
-            <li class="nav-item">
-                <a href="<%= request.getContextPath() %>/ventas/nuevaVenta.jsp" class="nav-link">
-                    <i class="fas fa-cash-register"></i>
-                    Nueva Venta
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="<%= request.getContextPath() %>/ventas/historialVentas.jsp" class="nav-link">
-                    <i class="fas fa-receipt"></i>
-                    Historial Ventas
-                </a>
-            </li>
-
-            <div class="nav-section-title">Administración</div>
-            <li class="nav-item">
-                <a href="<%= request.getContextPath() %>/usuarios/listarUsuarios.jsp" class="nav-link">
-                    <i class="fas fa-users"></i>
-                    Usuarios
-                </a>
-            </li>
-
-            <div class="nav-section-title">Sistema</div>
-            <li class="nav-item">
-                <a href="<%= request.getContextPath() %>/index.jsp" class="nav-link">
-                    <i class="fas fa-sign-out-alt"></i>
-                    Cerrar Sesión
-                </a>
-            </li>
-        </ul>
-    </nav>
-                
-    <!-- Top Bar -->
-    <header class="topbar">
-        <div class="topbar-left">
-            <button class="sidebar-toggle" id="sidebarToggle">
-                <i class="fas fa-bars"></i>
-            </button>
-            <h1 class="page-title">Gestión de Categorías</h1>
-        </div>
-
-        <div class="topbar-right">
-            <div class="user-info">
-                <div class="user-avatar"><%= usuarioLogueado.getNombre().substring(0, 1).toUpperCase() %></div>
-                <div class="user-details">
-                    <div class="user-name"><%= usuarioLogueado.getNombreCompleto() %></div>
-                    <div class="user-role"><%= usuarioLogueado.getRol().toUpperCase() %></div>
-                </div>
-            </div>
-        </div>
-    </header>
-                
-    <!-- Main Content -->
+    <jsp:include page="/includes/sidebar.jsp" />
+    <jsp:include page="/includes/topbar.jsp" />
+    
     <main class="main-content">
-        <!-- Breadcrumbs (navegación visual) -->
+        <!-- Breadcrumbs -->
         <nav aria-label="breadcrumb" class="breadcrumb-container">
             <div style="padding: 1rem 2rem;">
                 <ol class="breadcrumb mb-0">
@@ -161,7 +64,8 @@
                     </li>
                 </ol>
             </div>
-    </nav>  
+        </nav>
+        
         <div class="container-edicion">
             <div class="header-edicion">
                 <h1>
@@ -240,12 +144,12 @@
         </div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <jsp:include page="/includes/scripts.jsp" />
+    
+    <!-- Scripts específicos -->
     <script>
-        // Toggle sidebar
-        document.getElementById('sidebarToggle')?.addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('active');
-        });
+        // Personalizar título
+        document.getElementById('pageTitle').textContent = 'Editar Categoría';
 
         // Validación del formulario
         document.getElementById('formEditarCategoria').addEventListener('submit', function(e) {
@@ -268,7 +172,8 @@
                 }
             }
         });
-        // Contador de caracteres para descripción
+        
+        // Contador de caracteres
         const descripcionTextarea = document.getElementById('descripcion');
         const charCountSpan = document.getElementById('charCount');
 
@@ -277,7 +182,6 @@
                 const count = this.value.length;
                 charCountSpan.textContent = count;
 
-                // Cambiar color según cantidad
                 const counterDiv = charCountSpan.parentElement;
                 counterDiv.className = 'char-counter';
 
@@ -289,7 +193,7 @@
                     counterDiv.classList.add('danger');
                 }
             });
-        }        
+        }
     </script>
 </body>
 </html>

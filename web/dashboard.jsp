@@ -4,7 +4,7 @@
     // Verificar sesión
     HttpSession sesion = request.getSession(false);
     Usuario usuarioLogueado = null;
-    
+
     if (sesion != null && sesion.getAttribute("usuario") != null) {
         usuarioLogueado = (Usuario) sesion.getAttribute("usuario");
     } else {
@@ -55,7 +55,7 @@
                         Productos
                     </a>
                 </li>
-                
+
                 <% if (usuarioLogueado.isAdmin()) { %>
                 <li class="nav-item">
                     <a href="categorias/listarCategorias.jsp" class="nav-link">
@@ -64,14 +64,14 @@
                     </a>
                 </li>
                 <% } %>
-                
+
                 <li class="nav-item">
                     <a href="#" class="nav-link" onclick="showAlert('Módulo en desarrollo', 'info'); return false;">
                         <i class="fas fa-boxes"></i>
                         Control de Stock
                     </a>
                 </li>
-                
+
                 <% if (usuarioLogueado.isAdmin()) { %>
                 <li class="nav-item">
                     <a href="#" class="nav-link" onclick="showAlert('Módulo en desarrollo', 'info'); return false;">
@@ -80,7 +80,7 @@
                     </a>
                 </li>
                 <% } %>
-                
+
                 <div class="nav-section-title">Ventas</div>
                 <li class="nav-item">
                     <a href="#" class="nav-link" onclick="showAlert('Módulo en desarrollo', 'info'); return false;">
@@ -97,22 +97,24 @@
 
                 <% if (usuarioLogueado.isAdmin()) { %>
                 <div class="nav-section-title">Reportes</div>
+
                 <li class="nav-item">
-                    <a href="#" class="nav-link" onclick="showAlert('Módulo en desarrollo', 'info'); return false;">
+                    <a class="nav-link" href="ReporteServlet">
                         <i class="fas fa-chart-bar"></i>
                         Reportes
                     </a>
                 </li>
+
                 <li class="nav-item">
-                    <a href="#" class="nav-link" onclick="showAlert('Módulo en desarrollo', 'info'); return false;">
-                        <i class="fas fa-chart-line"></i>
+                    <a class="nav-link" href="ReporteServlet">
+                        <i class="fas fa-chart-bar"></i>
                         Análisis
                     </a>
                 </li>
                 <% } %>
 
                 <div class="nav-section-title">Sistema</div>
-                
+
                 <% if (usuarioLogueado.isAdmin()) { %>
                 <li class="nav-item">
                     <a href="usuarios/listarUsuarios.jsp" class="nav-link">
@@ -120,8 +122,8 @@
                         Usuarios
                     </a>
                 </li>
-                <% } %>
-                
+                <% }%>
+
                 <li class="nav-item">
                     <a href="#" class="nav-link" onclick="showAlert('Módulo en desarrollo', 'info'); return false;">
                         <i class="fas fa-cog"></i>
@@ -158,10 +160,10 @@
                 </button>
 
                 <div class="user-info">
-                    <div class="user-avatar"><%= usuarioLogueado.getIniciales() %></div>
+                    <div class="user-avatar"><%= usuarioLogueado.getIniciales()%></div>
                     <div class="user-details">
-                        <div class="user-name"><%= usuarioLogueado.getNombreCompleto() %></div>
-                        <div class="user-role"><%= usuarioLogueado.getRolNombre() %></div>
+                        <div class="user-name"><%= usuarioLogueado.getNombreCompleto()%></div>
+                        <div class="user-role"><%= usuarioLogueado.getRolNombre()%></div>
                     </div>
                 </div>
             </div>
@@ -172,8 +174,8 @@
             <!-- Mensaje de bienvenida personalizado -->
             <div class="alert alert-info alert-dismissible fade show" role="alert" style="margin-bottom: 1.5rem;">
                 <i class="fas fa-hand-wave"></i> 
-                <strong>¡Bienvenido, <%= usuarioLogueado.getNombre() %>!</strong> 
-                Has iniciado sesión como <strong><%= usuarioLogueado.getRolNombre() %></strong>
+                <strong>¡Bienvenido, <%= usuarioLogueado.getNombre()%>!</strong> 
+                Has iniciado sesión como <strong><%= usuarioLogueado.getRolNombre()%></strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
 
@@ -272,41 +274,43 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
         <script>
-            // Toggle sidebar
-            document.getElementById('sidebarToggle').addEventListener('click', function() {
-                document.getElementById('sidebar').classList.toggle('active');
-            });
+                        // Toggle sidebar
+                        document.getElementById('sidebarToggle').addEventListener('click', function () {
+                            document.getElementById('sidebar').classList.toggle('active');
+                        });
 
-            // Función showAlert necesaria para los links
-            function showAlert(message, type = 'info', duration = 4000) {
-                const alertContainer = document.getElementById('alertContainer');
-                const alertDiv = document.createElement('div');
-                alertDiv.className = 'alert alert-' + type + ' alert-dismissible fade show';
-                alertDiv.setAttribute('role', 'alert');
-                alertDiv.innerHTML = '<i class="fas fa-info-circle"></i> ' + message + 
-                    '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
-                alertContainer.appendChild(alertDiv);
-                
-                setTimeout(function() {
-                    if (alertDiv.parentElement) {
-                        const bsAlert = bootstrap.Alert.getInstance(alertDiv);
-                        if (bsAlert) bsAlert.close();
-                    }
-                }, duration);
-            }
+                        // Función showAlert necesaria para los links
+                        function showAlert(message, type = 'info', duration = 4000) {
+                            const alertContainer = document.getElementById('alertContainer');
+                            const alertDiv = document.createElement('div');
+                            alertDiv.className = 'alert alert-' + type + ' alert-dismissible fade show';
+                            alertDiv.setAttribute('role', 'alert');
+                            alertDiv.innerHTML = '<i class="fas fa-info-circle"></i> ' + message +
+                                    '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
+                            alertContainer.appendChild(alertDiv);
 
-            // Auto-cerrar alerta de bienvenida
-            setTimeout(function() {
-                const alerts = document.querySelectorAll('.alert');
-                alerts.forEach(alert => {
-                    if (alert.classList.contains('alert-info')) {
-                        const bsAlert = bootstrap.Alert.getInstance(alert);
-                        if (bsAlert) bsAlert.close();
-                    }
-                });
-            }, 5000);
+                            setTimeout(function () {
+                                if (alertDiv.parentElement) {
+                                    const bsAlert = bootstrap.Alert.getInstance(alertDiv);
+                                    if (bsAlert)
+                                        bsAlert.close();
+                                }
+                            }, duration);
+                        }
 
-            console.log('Dashboard cargado para: <%= usuarioLogueado.getNombreCompleto() %> (<%= usuarioLogueado.getRol() %>)');
+                        // Auto-cerrar alerta de bienvenida
+                        setTimeout(function () {
+                            const alerts = document.querySelectorAll('.alert');
+                            alerts.forEach(alert => {
+                                if (alert.classList.contains('alert-info')) {
+                                    const bsAlert = bootstrap.Alert.getInstance(alert);
+                                    if (bsAlert)
+                                        bsAlert.close();
+                                }
+                            });
+                        }, 5000);
+
+                        console.log('Dashboard cargado para: <%= usuarioLogueado.getNombreCompleto()%> (<%= usuarioLogueado.getRol()%>)');
         </script>
     </body>
 </html>

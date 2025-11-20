@@ -11,6 +11,15 @@
             <file>file:/Users/camiloprieto/Documents/Diseño%20de%20Interfaces/TrackIt/web/productos/editarProducto.jsp</file>
             <file>file:/Users/camiloprieto/Documents/Diseño%20de%20Interfaces/TrackIt/web/productos/listarProducto.jsp</file>
             <file>file:/Users/camiloprieto/Documents/Diseño%20de%20Interfaces/TrackIt/src/java/modelo/ProductoDAO.java</file>
+            <file>file:/Users/camiloprieto/Documents/Diseño%20de%20Interfaces/TrackIt/web/login.jsp</file>
+            <file>file:/Users/camiloprieto/Documents/Diseño%20de%20Interfaces/TrackIt/src/java/modelo/Usuario.java</file>
+            <file>file:/Users/camiloprieto/Documents/Diseño%20de%20Interfaces/TrackIt/src/java/modelo/UsuarioDAO.java</file>
+            <file>file:/Users/camiloprieto/Documents/Diseño%20de%20Interfaces/TrackIt/src/java/controlador/LoginServlet.java</file>
+            <file>file:/Users/camiloprieto/Documents/Diseño%20de%20Interfaces/TrackIt/src/java/controlador/UsuarioServlet.java</file>
+            <file>file:/Users/camiloprieto/Documents/Diseño%20de%20Interfaces/TrackIt/web/usuarios/agregarUsuario.jsp</file>
+            <file>file:/Users/camiloprieto/Documents/Diseño%20de%20Interfaces/TrackIt/web/usuarios/listarUsuarios.jsp</file>
+            <file>file:/Users/camiloprieto/Documents/Diseño%20de%20Interfaces/TrackIt/web/usuarios/editarUsuario.jsp</file>
+            <file>file:/Users/camiloprieto/Documents/Diseño%20de%20Interfaces/TrackIt/src/java/controlador/LogoutServlet.java</file>
         </group>
     </open-files>
 </project-private>

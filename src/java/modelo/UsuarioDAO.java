@@ -20,16 +20,16 @@ public class UsuarioDAO {
     }
     
     /**
-     * Valida las credenciales de login
-     * @param usuario nombre de usuario
-     * @param clave contraseña
-     * @return Usuario si las credenciales son correctas, null si no
+     * Valida las credenciales de un usuario (login)
+     * @param usuario Nombre de usuario
+     * @param clave Contraseña
+     * @return Usuario si las credenciales son válidas, null si no
      */
     public Usuario validarLogin(String usuario, String clave) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Usuario u = null;
+        Usuario usuarioObj = null;
         
         try {
             con = conexion.crearConexion();
@@ -41,31 +41,20 @@ public class UsuarioDAO {
             rs = ps.executeQuery();
             
             if (rs.next()) {
-                u = new Usuario();
-                u.setIdUsuario(rs.getInt("id_usuario"));
-                u.setIdentificacion(rs.getString("identificacion"));
-                u.setNombre(rs.getString("nombre"));
-                u.setApellido(rs.getString("apellido"));
-                u.setEmail(rs.getString("email"));
-                u.setUsuario(rs.getString("usuario"));
-                u.setClave(rs.getString("clave"));
-                u.setRol(rs.getString("rol"));
-                u.setEstado(rs.getString("estado"));
-                u.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
-                
-                System.out.println("Login exitoso: " + u.getNombreCompleto());
+                usuarioObj = mapearUsuario(rs);
+                System.out.println("✓ Login exitoso: " + usuario + " (" + usuarioObj.getRol() + ")");
             } else {
-                System.out.println("Credenciales incorrectas");
+                System.out.println("✗ Login fallido para: " + usuario);
             }
             
         } catch (SQLException e) {
-            System.err.println("ERROR al validar login: " + e.getMessage());
+            System.err.println("✗ ERROR al validar usuario: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, rs);
         }
         
-        return u;
+        return usuarioObj;
     }
     
     /**
@@ -95,11 +84,11 @@ public class UsuarioDAO {
             resultado = ps.executeUpdate();
             
             if (resultado > 0) {
-                System.out.println("Usuario agregado: " + u.getUsuario());
+                System.out.println("✓ Usuario agregado: " + u.getUsuario());
             }
             
         } catch (SQLException e) {
-            System.err.println("ERROR al agregar usuario: " + e.getMessage());
+            System.err.println("✗ ERROR al agregar usuario: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, null);
@@ -109,7 +98,7 @@ public class UsuarioDAO {
     }
     
     /**
-     * Actualiza los datos de un usuario
+     * Actualiza un usuario
      * @param u Usuario con datos actualizados
      * @return int número de filas afectadas
      */
@@ -120,8 +109,8 @@ public class UsuarioDAO {
         
         try {
             con = conexion.crearConexion();
-            String query = "UPDATE usuarios SET identificacion=?, nombre=?, apellido=?, "
-                         + "email=?, usuario=?, clave=?, rol=?, estado=? WHERE id_usuario=?";
+            String query = "UPDATE usuarios SET identificacion=?, nombre=?, apellido=?, email=?, "
+                         + "usuario=?, clave=?, rol=?, estado=? WHERE id_usuario=?";
             ps = con.prepareStatement(query);
             ps.setString(1, u.getIdentificacion());
             ps.setString(2, u.getNombre());
@@ -136,11 +125,11 @@ public class UsuarioDAO {
             resultado = ps.executeUpdate();
             
             if (resultado > 0) {
-                System.out.println("Usuario actualizado: " + u.getUsuario());
+                System.out.println("✓ Usuario actualizado: " + u.getUsuario());
             }
             
         } catch (SQLException e) {
-            System.err.println("ERROR al actualizar usuario: " + e.getMessage());
+            System.err.println("✗ ERROR al actualizar usuario: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, null);
@@ -150,8 +139,8 @@ public class UsuarioDAO {
     }
     
     /**
-     * Elimina un usuario (soft delete - cambia estado a 'inactivo')
-     * @param idUsuario ID del usuario a eliminar
+     * Elimina un usuario (soft delete)
+     * @param idUsuario ID del usuario
      * @return int número de filas afectadas
      */
     public int eliminarUsuario(int idUsuario) {
@@ -168,11 +157,11 @@ public class UsuarioDAO {
             resultado = ps.executeUpdate();
             
             if (resultado > 0) {
-                System.out.println("Usuario eliminado (inactivado): ID " + idUsuario);
+                System.out.println("✓ Usuario desactivado: ID " + idUsuario);
             }
             
         } catch (SQLException e) {
-            System.err.println("ERROR al eliminar usuario: " + e.getMessage());
+            System.err.println("✗ ERROR al eliminar usuario: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, null);
@@ -182,7 +171,7 @@ public class UsuarioDAO {
     }
     
     /**
-     * Obtiene un usuario por su ID
+     * Obtiene un usuario por ID
      * @param idUsuario ID del usuario
      * @return Usuario encontrado o null
      */
@@ -201,21 +190,11 @@ public class UsuarioDAO {
             rs = ps.executeQuery();
             
             if (rs.next()) {
-                u = new Usuario();
-                u.setIdUsuario(rs.getInt("id_usuario"));
-                u.setIdentificacion(rs.getString("identificacion"));
-                u.setNombre(rs.getString("nombre"));
-                u.setApellido(rs.getString("apellido"));
-                u.setEmail(rs.getString("email"));
-                u.setUsuario(rs.getString("usuario"));
-                u.setClave(rs.getString("clave"));
-                u.setRol(rs.getString("rol"));
-                u.setEstado(rs.getString("estado"));
-                u.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
+                u = mapearUsuario(rs);
             }
             
         } catch (SQLException e) {
-            System.err.println("ERROR al obtener usuario: " + e.getMessage());
+            System.err.println("✗ ERROR al obtener usuario: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, rs);
@@ -225,7 +204,7 @@ public class UsuarioDAO {
     }
     
     /**
-     * Lista todos los usuarios
+     * Lista todos los usuarios activos
      * @return List de usuarios
      */
     public List<Usuario> listarUsuarios() {
@@ -236,30 +215,18 @@ public class UsuarioDAO {
         
         try {
             con = conexion.crearConexion();
-            String query = "SELECT * FROM usuarios ORDER BY id_usuario DESC";
+            String query = "SELECT * FROM usuarios WHERE estado = 'activo' ORDER BY rol DESC, nombre ASC";
             ps = con.prepareStatement(query);
             rs = ps.executeQuery();
             
             while (rs.next()) {
-                Usuario u = new Usuario();
-                u.setIdUsuario(rs.getInt("id_usuario"));
-                u.setIdentificacion(rs.getString("identificacion"));
-                u.setNombre(rs.getString("nombre"));
-                u.setApellido(rs.getString("apellido"));
-                u.setEmail(rs.getString("email"));
-                u.setUsuario(rs.getString("usuario"));
-                u.setClave(rs.getString("clave"));
-                u.setRol(rs.getString("rol"));
-                u.setEstado(rs.getString("estado"));
-                u.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
-                
-                lista.add(u);
+                lista.add(mapearUsuario(rs));
             }
             
-            System.out.println("Usuarios encontrados: " + lista.size());
+            System.out.println("✓ Usuarios activos encontrados: " + lista.size());
             
         } catch (SQLException e) {
-            System.err.println("ERROR al listar usuarios: " + e.getMessage());
+            System.err.println("✗ ERROR al listar usuarios: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, rs);
@@ -269,10 +236,11 @@ public class UsuarioDAO {
     }
     
     /**
-     * Lista solo usuarios activos
-     * @return List de usuarios activos
+     * Lista usuarios por rol
+     * @param rol Rol del usuario
+     * @return List de usuarios del rol especificado
      */
-    public List<Usuario> listarUsuariosActivos() {
+    public List<Usuario> listarUsuariosPorRol(String rol) {
         List<Usuario> lista = new ArrayList<>();
         Connection con = null;
         PreparedStatement ps = null;
@@ -280,26 +248,17 @@ public class UsuarioDAO {
         
         try {
             con = conexion.crearConexion();
-            String query = "SELECT * FROM usuarios WHERE estado = 'activo' ORDER BY nombre ASC";
+            String query = "SELECT * FROM usuarios WHERE rol = ? AND estado = 'activo' ORDER BY nombre ASC";
             ps = con.prepareStatement(query);
+            ps.setString(1, rol);
             rs = ps.executeQuery();
             
             while (rs.next()) {
-                Usuario u = new Usuario();
-                u.setIdUsuario(rs.getInt("id_usuario"));
-                u.setIdentificacion(rs.getString("identificacion"));
-                u.setNombre(rs.getString("nombre"));
-                u.setApellido(rs.getString("apellido"));
-                u.setEmail(rs.getString("email"));
-                u.setUsuario(rs.getString("usuario"));
-                u.setRol(rs.getString("rol"));
-                u.setEstado(rs.getString("estado"));
-                
-                lista.add(u);
+                lista.add(mapearUsuario(rs));
             }
             
         } catch (SQLException e) {
-            System.err.println("ERROR al listar usuarios activos: " + e.getMessage());
+            System.err.println("✗ ERROR al listar usuarios por rol: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, rs);
@@ -309,8 +268,8 @@ public class UsuarioDAO {
     }
     
     /**
-     * Verifica si un nombre de usuario ya existe
-     * @param usuario nombre de usuario a verificar
+     * Verifica si existe un usuario (nombre de usuario)
+     * @param usuario Nombre de usuario a verificar
      * @return true si existe, false si no
      */
     public boolean existeUsuario(String usuario) {
@@ -332,13 +291,100 @@ public class UsuarioDAO {
             }
             
         } catch (SQLException e) {
-            System.err.println("ERROR al verificar usuario: " + e.getMessage());
+            System.err.println("✗ ERROR al verificar usuario: " + e.getMessage());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, rs);
         }
         
         return existe;
+    }
+    
+    /**
+     * Verifica si existe una identificación
+     * @param identificacion Identificación a verificar
+     * @return true si existe, false si no
+     */
+    public boolean existeIdentificacion(String identificacion) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean existe = false;
+        
+        try {
+            con = conexion.crearConexion();
+            String query = "SELECT COUNT(*) as total FROM usuarios WHERE identificacion = ?";
+            ps = con.prepareStatement(query);
+            ps.setString(1, identificacion);
+            
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                existe = rs.getInt("total") > 0;
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("✗ ERROR al verificar identificación: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            cerrarRecursos(con, ps, rs);
+        }
+        
+        return existe;
+    }
+    
+    /**
+     * Verifica si existe un email
+     * @param email Email a verificar
+     * @return true si existe, false si no
+     */
+    public boolean existeEmail(String email) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean existe = false;
+        
+        try {
+            con = conexion.crearConexion();
+            String query = "SELECT COUNT(*) as total FROM usuarios WHERE email = ?";
+            ps = con.prepareStatement(query);
+            ps.setString(1, email);
+            
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                existe = rs.getInt("total") > 0;
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("✗ ERROR al verificar email: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            cerrarRecursos(con, ps, rs);
+        }
+        
+        return existe;
+    }
+    
+    /**
+     * Mapea un ResultSet a un objeto Usuario
+     * @param rs ResultSet con datos del usuario
+     * @return Usuario mapeado
+     * @throws SQLException si hay error al leer datos
+     */
+    private Usuario mapearUsuario(ResultSet rs) throws SQLException {
+        Usuario u = new Usuario();
+        u.setIdUsuario(rs.getInt("id_usuario"));
+        u.setIdentificacion(rs.getString("identificacion"));
+        u.setNombre(rs.getString("nombre"));
+        u.setApellido(rs.getString("apellido"));
+        u.setEmail(rs.getString("email"));
+        u.setUsuario(rs.getString("usuario"));
+        u.setClave(rs.getString("clave"));
+        u.setRol(rs.getString("rol"));
+        u.setEstado(rs.getString("estado"));
+        u.setFechaRegistro(rs.getTimestamp("fecha_registro"));
+        return u;
     }
     
     /**
@@ -350,7 +396,7 @@ public class UsuarioDAO {
             if (ps != null) ps.close();
             if (con != null) con.close();
         } catch (SQLException e) {
-            System.err.println("ERROR al cerrar recursos: " + e.getMessage());
+            System.err.println("✗ ERROR al cerrar recursos: " + e.getMessage());
         }
     }
 }

@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpSession;
  */
 @WebServlet(name = "LogoutServlet", urlPatterns = {"/logout"})
 public class LogoutServlet extends HttpServlet {
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -23,16 +23,18 @@ public class LogoutServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         
         if (session != null) {
-            String usuario = (String) session.getAttribute("usuarioLogueado");
+            // Obtener nombre de usuario antes de invalidar
+            String nombreUsuario = (String) session.getAttribute("nombreUsuario");
             
             // Invalidar la sesión
             session.invalidate();
             
-            System.out.println("Sesión cerrada para usuario: " + usuario);
+            System.out.println("✓ Sesión cerrada para: " + 
+                             (nombreUsuario != null ? nombreUsuario : "usuario desconocido"));
         }
         
-        // Redirigir al index
-        response.sendRedirect("index.jsp");
+        // Redirigir al login
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
     }
     
     @Override

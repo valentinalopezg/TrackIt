@@ -3,12 +3,12 @@ package modelo;
 import java.sql.Timestamp;
 
 /**
- * Clase modelo para representar un Usuario del sistema
+ * Clase modelo para Usuario del sistema
  * Track!t - Sistema de Gestión de Inventarios
  */
 public class Usuario {
     
-    // Atributos
+    // Atributos según la BD existente
     private int idUsuario;
     private String identificacion;
     private String nombre;
@@ -18,10 +18,12 @@ public class Usuario {
     private String clave;
     private String rol; // 'admin' o 'vendedor'
     private String estado; // 'activo' o 'inactivo'
-    private Timestamp fechaCreacion;
+    private Timestamp fechaRegistro;
     
     // Constructor vacío
     public Usuario() {
+        this.estado = "activo";
+        this.rol = "vendedor";
     }
     
     // Constructor con parámetros principales
@@ -35,22 +37,6 @@ public class Usuario {
         this.clave = clave;
         this.rol = rol;
         this.estado = "activo";
-    }
-    
-    // Constructor completo
-    public Usuario(int idUsuario, String identificacion, String nombre, 
-                   String apellido, String email, String usuario, String clave, 
-                   String rol, String estado, Timestamp fechaCreacion) {
-        this.idUsuario = idUsuario;
-        this.identificacion = identificacion;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.email = email;
-        this.usuario = usuario;
-        this.clave = clave;
-        this.rol = rol;
-        this.estado = estado;
-        this.fechaCreacion = fechaCreacion;
     }
     
     // Getters y Setters
@@ -126,32 +112,80 @@ public class Usuario {
         this.estado = estado;
     }
     
-    public Timestamp getFechaCreacion() {
-        return fechaCreacion;
+    public Timestamp getFechaRegistro() {
+        return fechaRegistro;
     }
     
-    public void setFechaCreacion(Timestamp fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
+    public void setFechaRegistro(Timestamp fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
     }
     
-    // Método para obtener nombre completo
+    // Métodos de utilidad
+    
+    /**
+     * Obtiene el nombre completo del usuario
+     * @return String con nombre completo
+     */
     public String getNombreCompleto() {
         return nombre + " " + apellido;
     }
     
-    // Método para verificar si es admin
+    /**
+     * Verifica si el usuario es administrador
+     * @return true si es admin
+     */
     public boolean isAdmin() {
         return "admin".equalsIgnoreCase(this.rol);
     }
     
-    // Método para verificar si es vendedor
+    /**
+     * Verifica si el usuario es vendedor
+     * @return true si es vendedor
+     */
     public boolean isVendedor() {
         return "vendedor".equalsIgnoreCase(this.rol);
     }
     
-    // Método para verificar si está activo
+    /**
+     * Verifica si el usuario está activo
+     * @return true si estado es 'activo'
+     */
     public boolean isActivo() {
         return "activo".equalsIgnoreCase(this.estado);
+    }
+    
+    /**
+     * Obtiene las iniciales del usuario para el avatar
+     * @return String con las iniciales
+     */
+    public String getIniciales() {
+        String inicialNombre = nombre != null && !nombre.isEmpty() ? nombre.substring(0, 1) : "";
+        String inicialApellido = apellido != null && !apellido.isEmpty() ? apellido.substring(0, 1) : "";
+        return (inicialNombre + inicialApellido).toUpperCase();
+    }
+    
+    /**
+     * Obtiene el nombre del rol en español
+     * @return String con el nombre del rol
+     */
+    public String getRolNombre() {
+        return "admin".equalsIgnoreCase(rol) ? "Administrador" : "Vendedor";
+    }
+    
+    /**
+     * Obtiene el color del badge según el rol
+     * @return String con la clase CSS
+     */
+    public String getRolColor() {
+        return "admin".equalsIgnoreCase(rol) ? "danger" : "info";
+    }
+    
+    /**
+     * Obtiene el icono según el rol
+     * @return String con el icono de Font Awesome
+     */
+    public String getRolIcono() {
+        return "admin".equalsIgnoreCase(rol) ? "fa-user-shield" : "fa-user";
     }
     
     @Override

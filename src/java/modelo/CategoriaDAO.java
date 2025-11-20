@@ -24,32 +24,50 @@ public class CategoriaDAO {
      * @param c Categoria a agregar
      * @return int número de filas afectadas
      */
-    public int agregarCategoria(Categoria c) {
+    public int agregarCategoria(Categoria categoria) {
+        int resultado = 0;
+        String sql = "INSERT INTO categorias (nombre, descripcion, estado) VALUES (?, ?, ?)";
+
+        System.out.println("=== DAO: agregarCategoria ===");
+        System.out.println("SQL: " + sql);
+        System.out.println("Nombre: " + categoria.getNombre());
+        System.out.println("Descripción: " + categoria.getDescripcion());
+        System.out.println("Estado: " + categoria.getEstado());
+
         Connection con = null;
         PreparedStatement ps = null;
-        int resultado = 0;
-        
+
         try {
-            con = conexion.crearConexion();
-            String query = "INSERT INTO categorias (nombre, descripcion, estado) VALUES (?, ?, ?)";
-            ps = con.prepareStatement(query);
-            ps.setString(1, c.getNombre());
-            ps.setString(2, c.getDescripcion());
-            ps.setString(3, c.getEstado());
-            
-            resultado = ps.executeUpdate();
-            
-            if (resultado > 0) {
-                System.out.println("Categoría agregada: " + c.getNombre());
+            con = conexion.crearConexion(); 
+
+            if (con == null) {
+                System.err.println("ERROR: Conexión es NULL");
+                return 0;
             }
-            
+
+            System.out.println("✓ Conexión establecida");
+
+            ps = con.prepareStatement(sql);
+            ps.setString(1, categoria.getNombre());
+            ps.setString(2, categoria.getDescripcion());
+            ps.setString(3, categoria.getEstado());
+
+            System.out.println("✓ PreparedStatement configurado");
+
+            resultado = ps.executeUpdate();
+
+            System.out.println("✓ Filas afectadas: " + resultado);
+
         } catch (SQLException e) {
-            System.err.println("ERROR al agregar categoría: " + e.getMessage());
+            System.err.println("ERROR SQL al agregar categoría");
+            System.err.println("Mensaje: " + e.getMessage());
+            System.err.println("SQLState: " + e.getSQLState());
+            System.err.println("Error Code: " + e.getErrorCode());
             e.printStackTrace();
         } finally {
             cerrarRecursos(con, ps, null);
         }
-        
+
         return resultado;
     }
     
@@ -169,7 +187,7 @@ public class CategoriaDAO {
         
         try {
             con = conexion.crearConexion();
-            String query = "SELECT * FROM categorias ORDER BY nombre ASC";
+            String query = "SELECT * FROM categorias ORDER BY id_categoria DESC";
             ps = con.prepareStatement(query);
             rs = ps.executeQuery();
             

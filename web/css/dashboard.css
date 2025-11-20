@@ -1550,3 +1550,18 @@ select:focus {
     transition: background-color 0.2s ease;
 }
 
+/* ============================================
+   PERSONALIZACIÓN CARD HEADER CATEGORÍAS
+   ============================================ */
+
+.card .card-header {
+    background: transparent;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.card .card-header .card-title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}

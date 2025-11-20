@@ -35,6 +35,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="../css/dashboard.css" rel="stylesheet">
+    <link href="../css/categorias.css" rel="stylesheet">
 </head>
 <body>
     <!-- Sidebar -->
@@ -54,13 +55,13 @@
 
             <div class="nav-section-title">Inventario</div>
             <li class="nav-item">
-                <a href="<%= request.getContextPath() %>/producto?accion=listar" class="nav-link active">
+                <a href="<%= request.getContextPath() %>/producto?accion=listar" class="nav-link">
                     <i class="fas fa-cube"></i>
                     Productos
                 </a>
             </li>
             <li class="nav-item">
-                <a href="<%= request.getContextPath() %>/categorias/listarCategorias.jsp" class="nav-link">
+                <a href="<%= request.getContextPath() %>/categorias/listarCategorias.jsp" class="nav-link active">
                     <i class="fas fa-layer-group"></i>
                     Categorías
                 </a>
@@ -128,6 +129,14 @@
         </div>
     </header>
 
+    <!-- Breadcrumbs (navegación visual) -->
+    <nav aria-label="breadcrumb" style="padding: 1rem 2rem; background: #f8f9fa;">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="../dashboard.jsp">Dashboard</a></li>
+            <li class="breadcrumb-item active">Categorías</li>
+        </ol>
+    </nav>      
+    
     <!-- Main Content -->
     <main class="main-content">
         <!-- Alertas -->
@@ -166,7 +175,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
         <% } %>
-
+        
         <!-- Card Principal -->
         <div class="card">
             <div class="card-header">
@@ -179,7 +188,21 @@
                 </a>
                 <% } %>
             </div>
-
+            
+        <!-- Filtro/Búsqueda  --> 
+        <div class="search-container" style="padding: 1.5rem; border-bottom: 1px solid #e2e8f0;">
+            <div class="input-group">
+                <span class="input-group-text" style="background: #f7fafc; border-right: none;">
+                    <i class="fas fa-search" style="color: #718096;"></i>
+                </span>
+                <input type="text" 
+                       id="searchInput" 
+                       class="form-control" 
+                       style="border-left: none;"
+                       placeholder="Buscar categoría por nombre o descripción...">
+            </div>
+        </div>
+            
             <div class="table-responsive">
                 <table class="data-table">
                     <thead>
@@ -213,13 +236,13 @@
                                     <a href="editarCategoria.jsp?id=<%= cat.getIdCategoria() %>" 
                                        class="btn btn-sm btn-warning" 
                                        title="Editar">
-                                        <i class="fas fa-edit"></i>
+                                        <i class="fas fa-pen"></i>
                                     </a>
                                     <a href="../categoria?accion=eliminar&id=<%= cat.getIdCategoria() %>" 
                                        class="btn btn-sm btn-danger" 
-                                       onclick="return confirm('¿Está seguro de eliminar esta categoría?')"
-                                       title="Eliminar">
-                                        <i class="fas fa-trash"></i>
+                                       onclick="return confirm('¿Está seguro de inactivar esta categoría?')"
+                                       title="Inactivar">
+                                        <i class="fa-solid fa-trash"></i>
                                     </a>
                                     <% } else { %>
                                     <button class="btn btn-sm btn-secondary" disabled title="Sin permisos">
@@ -272,6 +295,62 @@
                 bsAlert.close();
             });
         }, 5000);
+
+        // Filtro/Búsqueda
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            const searchValue = this.value.toLowerCase();
+            const rows = document.querySelectorAll('.data-table tbody tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchValue) ? '' : 'none';
+            });
+        });
+
+        // Ordenar Columnas con indicadores visuales
+        let currentSortColumn = -1;
+        let currentSortOrder = 'asc';
+
+        document.querySelectorAll('.data-table th').forEach((header, index) => {
+            if (index < 4) { // Solo las primeras 4 columnas (no "Acciones")
+                header.classList.add('sortable');
+                header.addEventListener('click', () => {
+                    sortTable(index, header);
+                });
+            }
+        });
+
+        function sortTable(columnIndex, headerElement) {
+            const table = document.querySelector('.data-table tbody');
+            const rows = Array.from(table.querySelectorAll('tr'));
+
+            // Determinar orden
+            if (currentSortColumn === columnIndex) {
+                currentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSortOrder = 'asc';
+            }
+            currentSortColumn = columnIndex;
+
+            // Ordenar filas
+            rows.sort((a, b) => {
+                const aText = a.cells[columnIndex].textContent.trim();
+                const bText = b.cells[columnIndex].textContent.trim();
+
+                let comparison = aText.localeCompare(bText, 'es', { numeric: true });
+                return currentSortOrder === 'asc' ? comparison : -comparison;
+            });
+
+            // Actualizar tabla
+            rows.forEach(row => table.appendChild(row));
+
+            // Actualizar indicadores visuales
+            document.querySelectorAll('.data-table th').forEach(th => {
+                th.classList.remove('sorted-asc', 'sorted-desc');
+            });
+
+            headerElement.classList.add(currentSortOrder === 'asc' ? 'sorted-asc' : 'sorted-desc');
+        }
     </script>
 </body>
 </html>

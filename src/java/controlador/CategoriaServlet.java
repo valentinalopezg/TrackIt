@@ -87,36 +87,76 @@ public class CategoriaServlet extends HttpServlet {
     
     private void agregarCategoria(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         try {
             String nombre = request.getParameter("nombre");
             String descripcion = request.getParameter("descripcion");
-            
-            // Validar que el nombre no esté vacío
+
+            // DEBUG
+            System.out.println("=== AGREGAR CATEGORÍA ===");
+            System.out.println("Nombre recibido: " + nombre);
+            System.out.println("Descripción recibida: " + descripcion);
+
+            // Validaciones
             if (nombre == null || nombre.trim().isEmpty()) {
+                System.err.println("ERROR: Nombre vacío");
                 request.setAttribute("error", "El nombre de la categoría es obligatorio");
                 request.getRequestDispatcher("categorias/agregarCategoria.jsp").forward(request, response);
                 return;
             }
-            
+
+            if (nombre.trim().length() < 3) {
+                System.err.println("ERROR: Nombre muy corto");
+                request.setAttribute("error", "El nombre debe tener al menos 3 caracteres");
+                request.getRequestDispatcher("categorias/agregarCategoria.jsp").forward(request, response);
+                return;
+            }
+
+            // Crear objeto
             Categoria categoria = new Categoria();
             categoria.setNombre(nombre.trim());
-            categoria.setDescripcion(descripcion != null ? descripcion.trim() : "");
+            categoria.setDescripcion(descripcion != null && !descripcion.trim().isEmpty() ? descripcion.trim() : null);
             categoria.setEstado("activa");
-            
+
+            System.out.println("Objeto Categoria creado: " + categoria.getNombre());
+
+            // Guardar en BD
             CategoriaDAO categoriaDAO = new CategoriaDAO();
             int resultado = categoriaDAO.agregarCategoria(categoria);
-            
+
+            System.out.println("Resultado de agregar: " + resultado);
+
             if (resultado > 0) {
+                System.out.println("Categoría agregada exitosamente");
                 response.sendRedirect("categorias/listarCategorias.jsp?success=agregada");
             } else {
-                request.setAttribute("error", "Error al agregar la categoría");
+                System.err.println("ERROR: resultado = 0");
+                request.setAttribute("error", "No se pudo agregar la categoría");
                 request.getRequestDispatcher("categorias/agregarCategoria.jsp").forward(request, response);
             }
-            
+
         } catch (Exception e) {
-            System.err.println("Error al agregar categoría: " + e.getMessage());
-            request.setAttribute("error", "Error: " + e.getMessage());
+            System.err.println("ERROR: " + e.getMessage());
+            e.printStackTrace();
+
+            String mensajeError = "Error al agregar la categoría";
+
+            // Verificar si es SQLException
+            if (e instanceof java.sql.SQLException) {
+                java.sql.SQLException sqlEx = (java.sql.SQLException) e;
+                System.err.println("SQLState: " + sqlEx.getSQLState());
+                System.err.println("Error Code: " + sqlEx.getErrorCode());
+
+                if (sqlEx.getSQLState() != null && sqlEx.getSQLState().startsWith("23")) {
+                    mensajeError = "Ya existe una categoría con ese nombre";
+                } else if (sqlEx.getErrorCode() == 1406) {
+                    mensajeError = "El nombre o descripción es demasiado largo";
+                } else {
+                    mensajeError = "Error de base de datos: " + sqlEx.getMessage();
+                }
+            }
+
+            request.setAttribute("error", mensajeError);
             request.getRequestDispatcher("categorias/agregarCategoria.jsp").forward(request, response);
         }
     }

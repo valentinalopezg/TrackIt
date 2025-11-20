@@ -177,9 +177,9 @@
                               rows="4"
                               placeholder="Descripción opcional de la categoría"
                               maxlength="500"></textarea>
-                    <small class="form-text">
-                        Opcional - Máximo 500 caracteres
-                    </small>
+                    <div class="char-counter">
+                        <span id="charCount">0</span>/500 caracteres
+                    </div>
                 </div>
                 
                 <div class="btn-group">
@@ -221,6 +221,28 @@
                 return false;
             }
         });
+        // Contador de caracteres para descripción
+        const descripcionTextarea = document.getElementById('descripcion');
+        const charCountSpan = document.getElementById('charCount');
+
+        if (descripcionTextarea && charCountSpan) {
+            descripcionTextarea.addEventListener('input', function() {
+                const count = this.value.length;
+                charCountSpan.textContent = count;
+
+                // Cambiar color según cantidad
+                const counterDiv = charCountSpan.parentElement;
+                counterDiv.className = 'char-counter';
+
+                if (count > 450) {
+                    counterDiv.classList.add('warning');
+                }
+                if (count >= 490) {
+                    counterDiv.classList.remove('warning');
+                    counterDiv.classList.add('danger');
+                }
+            });
+        }
     </script>
 </body>
 </html>

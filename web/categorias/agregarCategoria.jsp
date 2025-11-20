@@ -43,7 +43,7 @@
 
         <ul class="sidebar-nav">
             <li class="nav-item">
-                <a href="../dashboard.jsp" class="nav-link">
+                <a href="<%= request.getContextPath() %>/dashboard.jsp" class="nav-link">
                     <i class="fas fa-chart-pie"></i>
                     Dashboard
                 </a>
@@ -51,27 +51,39 @@
 
             <div class="nav-section-title">Inventario</div>
             <li class="nav-item">
-                <a href="../productos/listarProductos.jsp" class="nav-link">
+                <a href="<%= request.getContextPath() %>/producto?accion=listar" class="nav-link">
                     <i class="fas fa-cube"></i>
                     Productos
                 </a>
             </li>
             <li class="nav-item">
-                <a href="listarCategorias.jsp" class="nav-link active">
+                <a href="<%= request.getContextPath() %>/categorias/listarCategorias.jsp" class="nav-link active">
                     <i class="fas fa-layer-group"></i>
                     Categorías
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-boxes"></i>
+                    Control de Stock
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-truck"></i>
+                    Proveedores
                 </a>
             </li>
 
             <div class="nav-section-title">Ventas</div>
             <li class="nav-item">
-                <a href="../ventas/nuevaVenta.jsp" class="nav-link">
+                <a href="<%= request.getContextPath() %>/ventas/nuevaVenta.jsp" class="nav-link">
                     <i class="fas fa-cash-register"></i>
                     Nueva Venta
                 </a>
             </li>
             <li class="nav-item">
-                <a href="../ventas/historialVentas.jsp" class="nav-link">
+                <a href="<%= request.getContextPath() %>/ventas/historialVentas.jsp" class="nav-link">
                     <i class="fas fa-receipt"></i>
                     Historial Ventas
                 </a>
@@ -79,7 +91,7 @@
 
             <div class="nav-section-title">Administración</div>
             <li class="nav-item">
-                <a href="../usuarios/listarUsuarios.jsp" class="nav-link">
+                <a href="<%= request.getContextPath() %>/usuarios/listarUsuarios.jsp" class="nav-link">
                     <i class="fas fa-users"></i>
                     Usuarios
                 </a>
@@ -87,14 +99,14 @@
 
             <div class="nav-section-title">Sistema</div>
             <li class="nav-item">
-                <a href="../logout" class="nav-link">
+                <a href="<%= request.getContextPath() %>/index.jsp" class="nav-link">
                     <i class="fas fa-sign-out-alt"></i>
                     Cerrar Sesión
                 </a>
             </li>
         </ul>
     </nav>
-
+                
     <!-- Top Bar -->
     <header class="topbar">
         <div class="topbar-left">

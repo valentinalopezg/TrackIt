@@ -50,7 +50,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="<%= request.getContextPath() %>/categorias/listarCategorias.jsp" class="nav-link">
                         <i class="fas fa-layer-group"></i>
                         Categorías
                     </a>

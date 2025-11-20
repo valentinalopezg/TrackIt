@@ -4,7 +4,8 @@
 db.properties
 src/db.properties
 **/db.properties
-
+web/WEB-INF/classes/db.properties
+**/classes/db.properties
 # ====================================
 # IntelliJ IDEA
 # ====================================

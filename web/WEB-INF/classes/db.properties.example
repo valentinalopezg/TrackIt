@@ -1,0 +1,25 @@
+# ==========================================
+# INSTRUCCIONES PARA CONFIGURAR:
+# ==========================================
+# 1. Copia este archivo y ren\u00f3mbralo a: db.properties
+# 2. Configura tu contrase\u00f1a de MySQL
+# 3. NO subas db.properties a Git (ya est\u00e1 en .gitignore)
+# ==========================================
+
+# Configuraci\u00f3n de base de datos
+db.usuario=root
+db.clave=TU_CONTRASE\u00d1A_AQUI
+db.servidor=localhost
+db.puerto=3306
+db.nombre=trackit_db
+```
+
+## \u2705 Paso 5: Probar que funcione
+
+1. **Run** el archivo `Conexion.java` (el que modificamos)
+2. Deber\u00edas ver en la consola:
+```
+\u2713 Configuraci\u00f3n cargada desde: db.properties
+\u2713 Driver MySQL cargado correctamente
+\u2713 Conexi\u00f3n exitosa a la base de datos: trackit_db
+\u2713\u2713\u2713 PRUEBA EXITOSA - La conexi\u00f3n funciona correctamente \u2713\u2713\u2713
